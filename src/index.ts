@@ -5,19 +5,25 @@ import got, { Method } from 'got'
 
 import { PortalConfig, ModuleContext, AppContext } from './index.types'
 import { UnauthorizedError } from './errors';
+const EventEmitter = require('events');
 
-export class TenantsConfig {
+export class TenantsConfig extends EventEmitter {
 	private portalConfig: PortalConfig;
 	private moduleContext: ModuleContext;
 	private job: CronJob;
 
 	constructor(portalConfig: PortalConfig) {
+		super();
+
 		this.portalConfig = {
 			cronFrequency: '*/10 * * * * *',
 			...portalConfig,
 		};
 
 		this.initCron();
+
+		this.fetchConfig()
+			.then((moduleContext) =>  this.emit('ready', moduleContext))
 	}
 
 	public apiKeyGuard = (req: Request, res: Response, next: any): void => {
@@ -34,8 +40,12 @@ export class TenantsConfig {
 		return next();
 	}
 
-	public getAppContext(tenant: string): AppContext {
-		return this.moduleContext.appsAccess.find((app) => app.name === tenant)
+	public getAppContext(apikey: string): AppContext {
+		return this.moduleContext.appsAccess.find((app) => app.apikey === apikey)
+	}
+
+	public getAllApps(): AppContext[] {
+		return this.moduleContext.appsAccess;
 	}
 
 	public requestModule(tenant: string, module: string, method: Method, path: string, params?: any): Promise<any> {
@@ -54,16 +64,25 @@ export class TenantsConfig {
 	}
 
 	private initCron(): void {
-		this.job = new CronJob(this.portalConfig.cronFrequency, this.onTick.bind(this), null, true, null, null, true)
+		this.job = new CronJob(this.portalConfig.cronFrequency, this.onTick.bind(this))
+		this.job.start();
 	}
 
 	private onTick(): void {
-		got.get<ModuleContext>(`${this.portalConfig.baseUrl}/api/1.0.0/modules/config`, {
+		this.fetchConfig()
+			.then((moduleContext) =>  this.emit('config-updated', moduleContext))
+	}
+
+	private fetchConfig(): Promise<ModuleContext> {
+		return got.get<ModuleContext>(`${this.portalConfig.baseUrl}/api/1.0.0/modules/config`, {
 			responseType: 'json',
 			headers: {
 				apikey: this.portalConfig.apikey,
 			},
 		})
-			.then((result) => this.moduleContext = result.body)
+			.then((result) => {
+				this.moduleContext = result.body;
+				return result.body
+			})
 	}
 }
