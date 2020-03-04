@@ -1,0 +1,135 @@
+{
+    "moduleConfiguration": {
+        "_id": "5e5cb4c1121c55001ac1c15e",
+        "__v": 0,
+        "meta": {
+            "deleted": false,
+            "lastModified": "2020-03-02T07:24:49.058Z",
+            "created": "2020-03-02T07:24:49.058Z"
+        },
+        "data": {
+            "name": "Test engine",
+            "moduleType": "engine",
+            "versions": [
+                {
+                    "version": "1.0.0",
+                    "description": "",
+                    "endpoint": "http://localhost:3000",
+                    "dependencies": []
+                }
+            ]
+        },
+        "uuid": "fba9aab8-eefe-4069-a25d-76d2c13b24f9"
+    },
+    "appsAccess": [
+        {
+            "name": "super-coole-website",
+            "apikey": "02666a7b-7219-488c-bab9-021f3dd8dad9",
+            "modules": [
+                {
+                    "name": "Content types module",
+                    "packageName": "@redactie/content-types",
+                    "version": "1.0.0",
+                    "description": "",
+                    "dependencies": [
+                        {
+                            "module": "5e58bef72f9bc702da6b69e8",
+                            "version": "1.0.0"
+                        },
+                        {
+                            "module": "5e58bec62f9bc702da6b69e7",
+                            "version": "1.0.0"
+                        }
+                    ]
+                },
+                {
+                    "name": "Content bundle",
+                    "packageName": "@redactie/content-bundle",
+                    "description": "",
+                    "version": "1.0.0",
+                    "dependencies": [
+                        {
+                            "version": "1.0.0",
+                            "module": "5e58be482f9bc702da6b69e4"
+                        },
+                        {
+                            "version": "1.0.0",
+                            "module": "5e58be612f9bc702da6b69e5"
+                        },
+                        {
+                            "version": "1.0.0",
+                            "module": "5e58bf0f2f9bc702da6b69e9"
+                        }
+                    ]
+                },
+                {
+                    "name": "Users & Roles bsl",
+                    "endpoint": "https://test.be",
+                    "description": "",
+                    "version": "2.0.0",
+                    "dependencies": []
+                },
+                {
+                    "name": "Users & Roles engine",
+                    "endpoint": "https://users-roles-engine.digipolis.be",
+                    "description": "",
+                    "version": "1.0.0",
+                    "dependencies": []
+                },
+                {
+                    "name": "Content types engine",
+                    "version": "1.0.0",
+                    "description": "",
+                    "endpoint": "https://content-types-engine.digipolis.be",
+                    "dependencies": []
+                },
+                {
+                    "name": "Form renderer",
+                    "packageName": "@redactie/form-renderer",
+                    "version": "1.0.0",
+                    "description": "",
+                    "dependencies": [
+                        {
+                            "module": "5e58bd4acc66730285ff25f4",
+                            "version": "1.0.0"
+                        },
+                        {
+                            "module": "5e58be952f9bc702da6b69e6",
+                            "version": "1.0.0"
+                        }
+                    ]
+                },
+                {
+                    "name": "Field types engine",
+                    "endpoint": "https://field-types-engine.digipolis.be/v1",
+                    "description": "",
+                    "version": "1.0.0",
+                    "dependencies": []
+                },
+                {
+                    "name": "Field types bsl",
+                    "endpoint": "https//field-types-bsl.digipolis.be",
+                    "description": "",
+                    "version": "1.0.0",
+                    "dependencies": [
+                        {
+                            "version": "1.0.0",
+                            "module": "5e58be482f9bc702da6b69e4"
+                        },
+                        {
+                            "version": "1.0.0",
+                            "module": "5e58be612f9bc702da6b69e5"
+                        }
+                    ]
+                },
+                {
+                    "name": "Test engine",
+                    "version": "1.0.0",
+                    "description": "",
+                    "endpoint": "http://localhost:3000",
+                    "dependencies": []
+                }
+            ]
+        }
+    ]
+}
