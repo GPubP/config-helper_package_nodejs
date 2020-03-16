@@ -18,6 +18,8 @@ interface ModuleConfig {
 }
 
 export interface AppContext {
+	_id: string;
+	uuid: string;
 	name: string;
 	apikey: string;
 	modules: {
