@@ -1,5 +1,11 @@
+interface Dependency {
+	version: string;
+	module: string;
+}
+
 interface ModuleConfig {
 	_id: string;
+	uuid: string;
 	meta: {
 		deleted: boolean;
 		lastModified: Date;
@@ -12,7 +18,7 @@ interface ModuleConfig {
 			version: string;
 			description: string;
 			endpoint: string;
-			dependencies: string;
+			dependencies: Dependency[];
 		}[];
 	};
 }
@@ -28,6 +34,7 @@ export interface AppContext {
 		endpoint?: string;
 		description: string;
 		version: string;
+		dependencies: Dependency[];
 	}[];
 }
 
