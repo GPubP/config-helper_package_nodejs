@@ -1,9 +1,11 @@
 import { Request } from 'express'
 import { CronJob } from 'cron'
-import { propOr } from 'ramda';
+import { propOr, pathOr } from 'ramda';
 import got, { Method } from 'got'
 
-import { PortalConfig, ModuleContext, AppContext } from './index.types'
+import { createParamDecorator, ExecutionContext } from '@nestjs/common';
+import { PortalConfig, ModuleContext, AppContext } from './index.types';
+
 import { UnauthorizedError } from './errors';
 const EventEmitter = require('events');
 
@@ -62,6 +64,15 @@ export class TenantsConfig extends EventEmitter {
 			},
 		})
 	}
+
+	public AppContext = createParamDecorator( // tslint:disable-line variable-name
+		(path: string[] = [], ctx: ExecutionContext): unknown => {
+			const req: Request = ctx.switchToHttp().getRequest();
+			const appContext: AppContext = this.getAppContext(req.get('apikey'));
+
+			return pathOr(null, path)(appContext);
+		}
+	);
 
 	private initCron(): void {
 		this.job = new CronJob(this.portalConfig.cronFrequency, this.onTick.bind(this))
