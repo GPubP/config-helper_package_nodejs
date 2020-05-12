@@ -9,6 +9,9 @@
     "test": "jest --config jest.config.js --runInBand --verbose false",
     "install:peers": "install-peers -f"
   },
+  "publishConfig": {
+    "@wcm:registry": "https://nexusrepo.antwerpen.be/repository/npm-private/"
+  },
   "keywords": [
     "WCM",
     "config",
