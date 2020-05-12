@@ -1,9 +1,10 @@
 {
   "name": "@wcm/config-helper",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "config helper",
   "main": "dist/index.js",
   "scripts": {
+    "prepublishOnly": "npm run build",
     "build": "tsc",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "test": "jest --config jest.config.js --runInBand --verbose false",
