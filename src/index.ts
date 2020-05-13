@@ -1,12 +1,13 @@
 import { Request } from 'express'
 import { CronJob } from 'cron'
-import { propOr, pathOr, clone } from 'ramda';
-import got, { Method } from 'got'
+import { propOr, pathOr, clone, Merge } from 'ramda';
+import got, { Method, GotOptions } from 'got'
 
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 import { PortalConfig, ModuleContext, AppContext, ModuleConfig } from './index.types';
 
 import { UnauthorizedError } from './errors';
+
 const EventEmitter = require('events');
 
 export class TenantsConfig extends EventEmitter {
@@ -54,12 +55,12 @@ export class TenantsConfig extends EventEmitter {
 		return clone(this.moduleContext.moduleConfiguration);
 	}
 
-	public requestModule(tenant: string, module: string, method: Method, path: string, params?: any): Promise<any> {
+	public requestModule(tenant: string, module: string, method: Method, path: string, params?: GotOptions): Promise<any> {
 		const appContext = this.getAppContext(tenant);
 		const moduleContext = appContext.modules.find((modu) => modu.name === module);
 
 		return got(`${moduleContext.endpoint}/${path}`, {
-			...params || {},
+			...params || {} as unknown as any,
 			method,
 			responseType: 'json',
 			headers: {
