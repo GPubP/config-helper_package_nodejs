@@ -128,3 +128,35 @@ public async read(
 	// use apikey and tenantName here
 }
 ```
+
+### getModuleConfig
+Get the module config received from wcm-admin
+
+```ts
+const tenantsConfig = new TenantsConfig({
+	baseUrl: "base-url of your service",
+	apikey: "your-apikey",
+});
+const moduleConfig = tenantsConfig.getModuleConfig();
+
+// returns
+interface ModuleConfig {
+	_id: string;
+	uuid: string;
+	meta: {
+		deleted: boolean;
+		lastModified: Date;
+		created: Date;
+	};
+	data: {
+		name: string;
+		moduleType: string;
+		versions: {
+			version: string;
+			description: string;
+			endpoint: string;
+			dependencies: Dependency[];
+		}[];
+	};
+};
+```

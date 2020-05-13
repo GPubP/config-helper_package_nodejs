@@ -1,10 +1,10 @@
 import { Request } from 'express'
 import { CronJob } from 'cron'
-import { propOr, pathOr } from 'ramda';
+import { propOr, pathOr, clone } from 'ramda';
 import got, { Method } from 'got'
 
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
-import { PortalConfig, ModuleContext, AppContext } from './index.types';
+import { PortalConfig, ModuleContext, AppContext, ModuleConfig } from './index.types';
 
 import { UnauthorizedError } from './errors';
 const EventEmitter = require('events');
@@ -25,7 +25,7 @@ export class TenantsConfig extends EventEmitter {
 		this.initCron();
 
 		this.fetchConfig()
-			.then((moduleContext) =>  this.emit('ready', moduleContext))
+			.then((moduleContext) => this.emit('ready', moduleContext))
 	}
 
 	public apiKeyGuard = (req: Request, res: Response, next: any): void => {
@@ -48,6 +48,10 @@ export class TenantsConfig extends EventEmitter {
 
 	public getAllApps(): AppContext[] {
 		return this.moduleContext.appsAccess;
+	}
+
+	public getModuleContext(): ModuleConfig {
+		return clone(this.moduleContext.moduleConfiguration);
 	}
 
 	public requestModule(tenant: string, module: string, method: Method, path: string, params?: any): Promise<any> {
@@ -97,3 +101,6 @@ export class TenantsConfig extends EventEmitter {
 			})
 	}
 }
+
+// Export types from root
+export * from './index.types';

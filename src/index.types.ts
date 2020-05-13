@@ -3,7 +3,7 @@ interface Dependency {
 	module: string;
 }
 
-interface ModuleConfig {
+export interface ModuleConfig {
 	_id: string;
 	uuid: string;
 	meta: {
