@@ -1,10 +1,11 @@
-import { Request } from 'express'
+import { Request, Response } from 'express'
 import { CronJob } from 'cron'
-import { propOr, pathOr, clone, Merge } from 'ramda';
+import { propOr, pathOr, clone } from 'ramda';
 import got, { Method, GotOptions } from 'got'
-
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
-import { PortalConfig, ModuleContext, AppContext, ModuleConfig } from './index.types';
+import jwt from 'jsonwebtoken'
+
+import { PortalConfig, ModuleContext, AppContext, ModuleConfig, BSLRequest, GatewayJWTContent } from './index.types';
 
 import { UnauthorizedError } from './errors';
 
@@ -29,7 +30,7 @@ export class TenantsConfig extends EventEmitter {
 			.then((moduleContext) => this.emit('ready', moduleContext))
 	}
 
-	public apiKeyGuard = (req: Request, res: Response, next: any): void => {
+	public apiKeyGuard = (req: BSLRequest, res: Response, next: any): void => {
 		if (!req.headers.apikey) {
 			return next(UnauthorizedError);
 		}
@@ -41,6 +42,38 @@ export class TenantsConfig extends EventEmitter {
 		}
 
 		return next();
+	}
+
+	public verifyJwt(jwtPublicKey: string = this.portalConfig.jwtPublicKey): (req: BSLRequest, res: Response, next: Function) => void {
+		if (!jwtPublicKey) {
+			throw new Error('verifyJwt: cannot verify incomming request when no public key is specified');
+		}
+
+		return (req: BSLRequest, res: Response, next: Function): void => {
+			if (typeof req.headers.authorization !== 'string') {
+				return next();
+			}
+
+			const token = req.headers.authorization.replace(/^token /i, '');
+
+			jwt.verify(token, jwtPublicKey,  { algorithms: ['HS256'] }, (err, context) => {
+				if (err || !context) {
+					console.error('Invalid Token passed in authorization header', req.url);
+					return next();
+				}
+
+				req.locals = {
+					...req.locals,
+					requestContex: jwt.decode(token),
+				};
+
+				next();
+			});
+		}
+	}
+
+	public getJWTContent(req: BSLRequest): GatewayJWTContent {
+		return req.locals?.requestContext;
 	}
 
 	public getAppContext(apikey: string): AppContext {

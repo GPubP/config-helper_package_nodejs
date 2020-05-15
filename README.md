@@ -10,6 +10,7 @@ const tenantsConfig = new TenantsConfig({
 	baseUrl: "base-url of your service",
 	apikey: "your-apikey",
 	cronFrequency: "*/10 * * * * *", // = default
+	jwtPublicKey: "-----BEGIN PUBLIC KEY-----\n...-----END PUBLIC KEY-----" // optional
 });
 ```
 
@@ -23,6 +24,47 @@ const tenantsConfig = new TenantsConfig({
 });
 
 app.use(tenantsConfig.apiKeyGuard);
+```
+
+### verifyJwt
+Middleware that converts an apikey to a tenant context and blocks request when the key is not valid.
+
+```ts
+const tenantsConfig = new TenantsConfig({
+	baseUrl: "base-url of your service",
+	apikey: "your-apikey",
+
+});
+
+app.use(tenantsConfig.verifyJwt("PUBLIC KEY"));
+```
+
+You don't need to pass the token if it is specified in tenantsConfig constructor
+```ts
+const tenantsConfig = new TenantsConfig({
+	baseUrl: "base-url of your service",
+	apikey: "your-apikey",
+	jwtPublicKey: "-----BEGIN PUBLIC KEY-----\n...-----END PUBLIC KEY-----"
+});
+
+app.use(tenantsConfig.verifyJwt());
+```
+
+### getJWTContent
+Helper that returns the payload of the authorization jwt token set on the req.locals object by the verifyJwt function
+
+```ts
+const tenantsConfig = new TenantsConfig({
+	baseUrl: "base-url of your service",
+	apikey: "your-apikey",
+	jwtPublicKey: "-----BEGIN PUBLIC KEY-----\n...-----END PUBLIC KEY-----"
+});
+
+app.use(tenantsConfig.verifyJwt());
+app.use((req, res, next) => {
+	// You can get the context after verifyJwt has been called.
+	const context = tenantsConfig.getJWTContent();
+})
 ```
 
 ### getAppContext
