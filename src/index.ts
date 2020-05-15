@@ -46,7 +46,7 @@ export class TenantsConfig extends EventEmitter {
 
 	public verifyJwt(jwtPublicKey: string = this.portalConfig.jwtPublicKey): (req: BSLRequest, res: Response, next: Function) => void {
 		if (!jwtPublicKey) {
-			throw new Error('verifyJwt: cannot verify incomming request when no public key is specified');
+			throw new Error('verifyJwt: cannot verify incoming request when no public key is specified');
 		}
 
 		return (req: BSLRequest, res: Response, next: Function): void => {
