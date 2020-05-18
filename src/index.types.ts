@@ -1,3 +1,5 @@
+import { Request } from 'express';
+
 interface Dependency {
 	version: string;
 	module: string;
@@ -47,4 +49,16 @@ export interface PortalConfig {
 	baseUrl: string;
 	apikey: string;
 	cronFrequency?: string;
+	jwtPublicKey?: string;
+}
+
+export interface GatewayJWTContent {
+	tenantKey: string;
+	userToken: string;
+	contract: string;
+	iat: number;
+}
+
+export interface BSLRequest extends Request {
+	locals?: Record<string, any> & { requestContext?: GatewayJWTContent};
 }
