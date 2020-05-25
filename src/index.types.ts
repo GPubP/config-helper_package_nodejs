@@ -25,19 +25,40 @@ export interface ModuleConfig {
 	};
 }
 
+export interface AppModuleData {
+	moduleType: 'business-service' | 'frontend-bundle' | string;
+	name: string;
+	routePrefix: string;
+}
+
+export interface AppModuleMeta {
+	created: string;
+	deleted: boolean;
+	lastModified: string;
+}
+
+export interface AppModule {
+	uuid: string;
+	data: AppModuleData;
+	meta: AppModuleMeta;
+}
+
+export interface AppModuleVersion {
+	module: AppModule;
+	name: string;
+	packageName?: string;
+	endpoint?: string;
+	description: string;
+	version: string;
+	dependencies: Dependency[];
+}
+
 export interface AppContext {
 	_id: string;
 	uuid: string;
 	name: string;
 	apikey: string;
-	modules: {
-		name: string;
-		packageName?: string;
-		endpoint?: string;
-		description: string;
-		version: string;
-		dependencies: Dependency[];
-	}[];
+	modules: AppModuleVersion[];
 }
 
 export interface ModuleContext {
@@ -60,5 +81,6 @@ export interface GatewayJWTContent {
 }
 
 export interface BSLRequest extends Request {
+	// tslint:disable-next-line no-any
 	locals?: Record<string, any> & { requestContext?: GatewayJWTContent};
 }

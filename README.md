@@ -85,6 +85,7 @@ interface AppContext {
 	name: string;
 	apikey: string;
 	modules: {
+		module: string;
 		name: string;
 		packageName?: string;
 		endpoint?: string;
@@ -113,6 +114,7 @@ type AppContext = Array<{
 	name: string;
 	apikey: string;
 	modules: {
+		module: string;
 		name: string;
 		packageName?: string;
 		endpoint?: string;
@@ -134,7 +136,7 @@ const tenantsConfig = new TenantsConfig({
 
 tenantsConfig.requestModule(
 	"tenant-name", 
-	"target module name", 
+	"target module endpoint", 
 	"PUT", 
 	"/path-of-target-module-resource", 
 	{
