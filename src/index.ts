@@ -120,6 +120,7 @@ export class TenantsConfig extends EventEmitter {
 			method,
 			prefixUrl: moduleContext.endpoint,
 			responseType: 'json',
+			resolveBodyOnly: true,
 			headers: {
 				...propOr({}, 'headers')(params),
 				apikey: appContext.apikey,
@@ -142,9 +143,9 @@ export class TenantsConfig extends EventEmitter {
 		}
 	);
 
-	public getAppsFeaturingModule(moduleId: string, moduleVersion: string): AppContext[] {
+	public getAppsFeaturingModule(routePrefix: string, moduleVersion: string): AppContext[] {
 		return this.moduleContext.appsAccess.reduce((acc, app) => {
-			const hasModule = !!app.modules.find(mod => mod.module?.uuid === moduleId && (!moduleVersion || mod.version === moduleVersion));
+			const hasModule = !!app.modules.find(mod => mod?.module?.data?.routePrefix === routePrefix && (!moduleVersion || mod.version === moduleVersion));
 			return acc.concat(hasModule ? [app] : []);
 		}, []);
 	}
