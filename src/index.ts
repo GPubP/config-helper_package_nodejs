@@ -1,15 +1,20 @@
-import { Request, Response } from 'express'
-import { CronJob } from 'cron'
-import { propOr, pathOr, clone } from 'ramda';
-import got, { Method, GotOptions } from 'got'
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
-import jwt from 'jsonwebtoken'
-
-import { PortalConfig, ModuleContext, AppContext, ModuleConfig, BSLRequest, GatewayJWTContent } from './index.types';
+import { CronJob } from 'cron';
+import { EventEmitter } from 'events';
+import { Request, Response } from 'express';
+import got, { GotOptions, Method, Response as GotResponse } from 'got';
+import jwt from 'jsonwebtoken';
+import { clone, pathOr, propOr } from 'ramda';
 
 import { UnauthorizedError } from './errors';
-
-const EventEmitter = require('events');
+import {
+	AppContext,
+	BSLRequest,
+	GatewayJWTContent,
+	ModuleConfig,
+	ModuleContext,
+	PortalConfig,
+} from './index.types';
 
 export class TenantsConfig extends EventEmitter {
 	private portalConfig: PortalConfig;
@@ -27,15 +32,15 @@ export class TenantsConfig extends EventEmitter {
 		this.initCron();
 
 		this.fetchConfig()
-			.then((moduleContext) => this.emit('ready', moduleContext))
+			.then(moduleContext => this.emit('ready', moduleContext));
 	}
 
-	public apiKeyGuard = (req: BSLRequest, res: Response, next: any): void => {
+	public apiKeyGuard = (req: BSLRequest, res: Response, next: Function): void => {
 		if (!req.headers.apikey) {
 			return next(UnauthorizedError);
 		}
 
-		const linkedApp = this.moduleContext.appsAccess.find((app) => app.apikey === req.headers.apikey)
+		const linkedApp = this.moduleContext.appsAccess.find(app => app.apikey === req.headers.apikey);
 
 		if (!linkedApp) {
 			return next(UnauthorizedError);
@@ -56,8 +61,9 @@ export class TenantsConfig extends EventEmitter {
 
 			const token = req.headers.authorization.replace(/^token /i, '');
 
-			jwt.verify(token, jwtPublicKey,  { algorithms: ['HS256'] }, (err, context) => {
+			jwt.verify(token, jwtPublicKey, { algorithms: ['RS256'] }, (err, context) => {
 				if (err || !context) {
+					// tslint:disable-next-line no-console
 					console.error('Invalid Token passed in authorization header', req.url);
 					return next();
 				}
@@ -69,7 +75,7 @@ export class TenantsConfig extends EventEmitter {
 
 				next();
 			});
-		}
+		};
 	}
 
 	public getJWTContent(req: BSLRequest): GatewayJWTContent {
@@ -77,7 +83,7 @@ export class TenantsConfig extends EventEmitter {
 	}
 
 	public getAppContext(apikey: string): AppContext {
-		return this.moduleContext.appsAccess.find((app) => app.apikey === apikey)
+		return this.moduleContext.appsAccess.find(app => app.apikey === apikey);
 	}
 
 	public getAllApps(): AppContext[] {
@@ -88,19 +94,44 @@ export class TenantsConfig extends EventEmitter {
 		return clone(this.moduleContext.moduleConfiguration);
 	}
 
-	public requestModule(tenant: string, module: string, method: Method, path: string, params?: GotOptions): Promise<any> {
-		const appContext = this.getAppContext(tenant);
-		const moduleContext = appContext.modules.find((modu) => modu.name === module);
+	public async requestModule<T = unknown>(
+		tenantApikey: string,
+		moduleRoutePrefix: string,
+		method: Method,
+		path: string,
+		params?: GotOptions
+	): Promise<GotResponse<T>> {
+		const appContext = this.getAppContext(tenantApikey);
 
-		return got(`${moduleContext.endpoint}/${path}`, {
-			...params || {} as unknown as any,
+		if (!appContext) {
+			throw new Error('Could not find tenant based on tenant key');
+		}
+
+		const moduleContext = appContext.modules.find(modu =>
+			modu?.module?.data?.moduleType === 'business-service' && modu?.module?.data?.routePrefix === moduleRoutePrefix
+		);
+
+		if (!moduleContext) {
+			throw new Error(`Could not find module with endpoint ${moduleRoutePrefix} for tenant ${appContext.name}`);
+		}
+
+		return await got<T>(path.replace(/^\//, ''), {
+			...params || {} as unknown as any, // tslint:disable-line no-any
 			method,
+			prefixUrl: moduleContext.endpoint,
 			responseType: 'json',
+			resolveBodyOnly: true,
 			headers: {
 				...propOr({}, 'headers')(params),
 				apikey: appContext.apikey,
 			},
-		})
+		}).catch((e) => {
+			throw {
+				status: e?.response?.statusCode,
+				body: e?.response?.body,
+				error: e,
+			};
+		});
 	}
 
 	public AppContext = createParamDecorator( // tslint:disable-line variable-name
@@ -112,14 +143,21 @@ export class TenantsConfig extends EventEmitter {
 		}
 	);
 
+	public getAppsFeaturingModule(routePrefix: string, moduleVersion: string): AppContext[] {
+		return this.moduleContext.appsAccess.reduce((acc, app) => {
+			const hasModule = !!app.modules.find(mod => mod?.module?.data?.routePrefix === routePrefix && (!moduleVersion || mod.version === moduleVersion));
+			return acc.concat(hasModule ? [app] : []);
+		}, []);
+	}
+
 	private initCron(): void {
-		this.job = new CronJob(this.portalConfig.cronFrequency, this.onTick.bind(this))
+		this.job = new CronJob(this.portalConfig.cronFrequency, this.onTick.bind(this));
 		this.job.start();
 	}
 
 	private onTick(): void {
 		this.fetchConfig()
-			.then((moduleContext) =>  this.emit('config-updated', moduleContext))
+			.then(moduleContext => this.emit('config-updated', moduleContext));
 	}
 
 	private fetchConfig(): Promise<ModuleContext> {
@@ -131,8 +169,8 @@ export class TenantsConfig extends EventEmitter {
 		})
 			.then((result) => {
 				this.moduleContext = result.body;
-				return result.body
-			})
+				return result.body;
+			});
 	}
 }
 
