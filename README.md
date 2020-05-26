@@ -85,7 +85,7 @@ interface AppContext {
 	name: string;
 	apikey: string;
 	modules: {
-		module: string;
+		module: AppModule;
 		name: string;
 		packageName?: string;
 		endpoint?: string;
@@ -114,7 +114,7 @@ type AppContext = Array<{
 	name: string;
 	apikey: string;
 	modules: {
-		module: string;
+		module: AppModule;
 		name: string;
 		packageName?: string;
 		endpoint?: string;
