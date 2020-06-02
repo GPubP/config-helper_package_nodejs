@@ -24,7 +24,7 @@ export class TenantsConfig extends EventEmitter {
 	private moduleContext: ModuleContext;
 	private job: CronJob;
 	private kafka: Kafka;
-	private wcmDigipolisSystemConsumer: WcmDigipolisSystemConsumer;
+	public systemKafkaConsumer: WcmDigipolisSystemConsumer;
 
 	constructor(portalConfig: PortalConfig) {
 		super();
@@ -166,11 +166,11 @@ export class TenantsConfig extends EventEmitter {
 
 	private initKafka(): void {
 		this.kafka = createKafkaInstance(this.portalConfig.kafka);
-		this.wcmDigipolisSystemConsumer = new WcmDigipolisSystemConsumer(this.kafka, this.portalConfig.kafka);
+		this.systemKafkaConsumer = new WcmDigipolisSystemConsumer(this.kafka, this.portalConfig.kafka);
 
-		this.wcmDigipolisSystemConsumer.on('tenant-created', () => this.onTick());
-		this.wcmDigipolisSystemConsumer.on('tenant-removed', () => this.onTick());
-		this.wcmDigipolisSystemConsumer.on('tenant-updated', () => this.onTick());
+		this.systemKafkaConsumer.on('tenant-created', () => this.onTick());
+		this.systemKafkaConsumer.on('tenant-removed', () => this.onTick());
+		this.systemKafkaConsumer.on('tenant-updated', () => this.onTick());
 	}
 
 	private onTick(): void {

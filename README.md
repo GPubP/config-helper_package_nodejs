@@ -29,6 +29,21 @@ It is recommended to set kafka variables.
 This will switch the polling behaviour to an event subsription behaviour. 
 Subscriptions are far more efficient. This also means that events become more meaningful (see Events section).
 
+### systemKafkaConsumer
+This is the consumer the TenantsConfig class uses to listen to wcm-digipolis.system (or other) kafka events.
+You can subscribe to events yourself when needed.
+
+```ts
+const tenantsConfig = new TenantsConfig({
+	...
+});
+
+tenantsConfig.systemKafkaConsumer.on('tenant-create', (message: KafkaMessage) => {
+	// Handle event ...
+});
+
+```
+
 ### apiKeyGuard
 Middleware that converts an apikey to a tenant context and blocks request when the key is not valid.
 
