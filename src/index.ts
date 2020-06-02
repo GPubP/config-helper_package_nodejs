@@ -20,11 +20,12 @@ import { WcmDigipolisSystemConsumer } from './kafka/consumers/wcm-digipolis.syst
 import { createKafkaInstance } from './kafka/kafka';
 
 export class TenantsConfig extends EventEmitter {
+	public systemKafkaConsumer: WcmDigipolisSystemConsumer;
+
 	private portalConfig: PortalConfig;
 	private moduleContext: ModuleContext;
 	private job: CronJob;
 	private kafka: Kafka;
-	public systemKafkaConsumer: WcmDigipolisSystemConsumer;
 
 	constructor(portalConfig: PortalConfig) {
 		super();
