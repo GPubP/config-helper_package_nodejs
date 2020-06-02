@@ -1,3 +1,4 @@
+import Kafka from '@acpaas/kafka-nodejs-helper';
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 import { CronJob } from 'cron';
 import { EventEmitter } from 'events';
@@ -15,11 +16,15 @@ import {
 	ModuleContext,
 	PortalConfig,
 } from './index.types';
+import { WcmDigipolisSystemConsumer } from './kafka/consumers/wcm-digipolis.system';
+import { createKafkaInstance } from './kafka/kafka';
 
 export class TenantsConfig extends EventEmitter {
 	private portalConfig: PortalConfig;
 	private moduleContext: ModuleContext;
 	private job: CronJob;
+	private kafka: Kafka;
+	private wcmDigipolisSystemConsumer: WcmDigipolisSystemConsumer;
 
 	constructor(portalConfig: PortalConfig) {
 		super();
@@ -29,7 +34,11 @@ export class TenantsConfig extends EventEmitter {
 			...portalConfig,
 		};
 
-		this.initCron();
+		if (portalConfig.kafka) {
+			this.initKafka();
+		} else {
+			this.initCron();
+		}
 
 		this.fetchConfig()
 			.then(moduleContext => this.emit('ready', moduleContext));
@@ -153,6 +162,15 @@ export class TenantsConfig extends EventEmitter {
 	private initCron(): void {
 		this.job = new CronJob(this.portalConfig.cronFrequency, this.onTick.bind(this));
 		this.job.start();
+	}
+
+	private initKafka(): void {
+		this.kafka = createKafkaInstance(this.portalConfig.kafka);
+		this.wcmDigipolisSystemConsumer = new WcmDigipolisSystemConsumer(this.kafka, this.portalConfig.kafka);
+
+		this.wcmDigipolisSystemConsumer.on('tenant-created', () => this.onTick());
+		this.wcmDigipolisSystemConsumer.on('tenant-removed', () => this.onTick());
+		this.wcmDigipolisSystemConsumer.on('tenant-updated', () => this.onTick());
 	}
 
 	private onTick(): void {

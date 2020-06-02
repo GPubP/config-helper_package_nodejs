@@ -4,15 +4,30 @@ This packages provides the tools to protect your BSL (business service layer) fr
 
 It provides the following tools:
 
+## Interface
+
 ### Create instance
 ```ts
 const tenantsConfig = new TenantsConfig({
 	baseUrl: "base-url of your service",
 	apikey: "your-apikey",
-	cronFrequency: "*/10 * * * * *", // = default
-	jwtPublicKey: "-----BEGIN PUBLIC KEY-----\n...-----END PUBLIC KEY-----" // optional
+	cronFrequency: "*/10 * * * * *", // optional => default
+	jwtPublicKey: "-----BEGIN PUBLIC KEY-----\n...-----END PUBLIC KEY-----", // optional => defaults to undefined
+	kafka: {
+		host: "hostname of kafka";
+		origin: "server origin";
+		ca: "CA PUBLIC KEY";
+		key: "PRIVATE KEY";
+		cert: "PUBLIC KEY";
+		systemTopic: "wcm-digipolis.system"; // example
+		systemGroupId: "wcm-digipolis.system-portal"; // example
+	} // optional => defaults to undefined
 });
 ```
+Tip:
+It is recommended to set kafka variables. 
+This will switch the polling behaviour to an event subsription behaviour. 
+Subscriptions are far more efficient. This also means that events become more meaningful (see Events section).
 
 ### apiKeyGuard
 Middleware that converts an apikey to a tenant context and blocks request when the key is not valid.
@@ -204,3 +219,10 @@ interface ModuleConfig {
 	};
 };
 ```
+
+## Events
+
+| name           | type          | description                                                                       |
+|----------------|---------------|-----------------------------------------------------------------------------------|
+| ready          | ModuleContext | ModuleConfig has been fetched and set for the first time.                         |
+| config-updated | ModuleContext | ModuleConfig has been update through polling or event (depends on kafka setting). |

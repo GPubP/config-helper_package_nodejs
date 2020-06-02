@@ -1,5 +1,7 @@
 import { Request } from 'express';
 
+import { KafkaConfig } from './kafka/kafka.types';
+
 interface Dependency {
 	version: string;
 	module: string;
@@ -71,6 +73,7 @@ export interface PortalConfig {
 	apikey: string;
 	cronFrequency?: string;
 	jwtPublicKey?: string;
+	kafka?: KafkaConfig;
 }
 
 export interface GatewayJWTContent {
