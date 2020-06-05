@@ -4,6 +4,14 @@ export interface KafkaConfig {
 	ca: string;
 	key: string;
 	cert: string;
-	systemTopic: string;
-	systemGroupId: string;
+	topics: {
+		system: string;
+		tenants: string;
+		modules: string;
+	};
+	subscribers: {
+		system: string;
+		tenants: string;
+		modules: string;
+	};
 }
