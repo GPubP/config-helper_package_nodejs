@@ -1,14 +1,18 @@
-import { KafkaMessage } from '@acpaas/kafka-nodejs-helper';
+import Kafka, { KafkaMessage } from '@acpaas/kafka-nodejs-helper';
+import { EventEmitter } from 'events';
 
 import { KafkaConfig } from '../kafka.types';
-import { AbstractKafkaConsumer } from './AbstractKafkaConsumer';
 
-export class WcmDigipolisSystemConsumer extends AbstractKafkaConsumer {
-	protected subscribe(config: KafkaConfig): void {
-		this.kafka.subscribe({
-			topic: config.topics.system,
-			groupId: config.subscribers.system,
+class WcmDigipolisSystemConsumer extends EventEmitter {
+	constructor(kafkaInstance: Kafka, config: KafkaConfig) {
+		super();
+
+		kafkaInstance.subscribe({
+			topic: config.systemTopic,
+			groupId: config.systemGroupId,
 			callback: (message: KafkaMessage) => this.emit(message.key, message),
 		});
 	}
 }
+
+export { WcmDigipolisSystemConsumer };
