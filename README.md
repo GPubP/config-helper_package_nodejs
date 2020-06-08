@@ -4,14 +4,44 @@ This packages provides the tools to protect your BSL (business service layer) fr
 
 It provides the following tools:
 
+## Interface
+
 ### Create instance
 ```ts
 const tenantsConfig = new TenantsConfig({
 	baseUrl: "base-url of your service",
 	apikey: "your-apikey",
-	cronFrequency: "*/10 * * * * *", // = default
-	jwtPublicKey: "-----BEGIN PUBLIC KEY-----\n...-----END PUBLIC KEY-----" // optional
+	cronFrequency: "*/10 * * * * *", // optional => default
+	jwtPublicKey: "-----BEGIN PUBLIC KEY-----\n...-----END PUBLIC KEY-----", // optional => defaults to undefined
+	kafka: {
+		host: "hostname of kafka";
+		origin: "server origin";
+		ca: "CA PUBLIC KEY";
+		key: "PRIVATE KEY";
+		cert: "PUBLIC KEY";
+		systemTopic: "wcm-digipolis.system"; // example
+		systemGroupId: "wcm-digipolis.system-portal"; // example
+	} // optional => defaults to undefined
 });
+```
+Tip:
+It is recommended to set kafka variables. 
+This will switch the polling behaviour to an event subsription behaviour. 
+Subscriptions are far more efficient. This also means that events become more meaningful (see Events section).
+
+### systemKafkaConsumer
+This is the consumer the TenantsConfig class uses to listen to wcm-digipolis.system (or other) kafka events.
+You can subscribe to events yourself when needed.
+
+```ts
+const tenantsConfig = new TenantsConfig({
+	...
+});
+
+tenantsConfig.systemKafkaConsumer.on('tenant-create', (message: KafkaMessage) => {
+	// Handle event ...
+});
+
 ```
 
 ### apiKeyGuard
@@ -204,3 +234,10 @@ interface ModuleConfig {
 	};
 };
 ```
+
+## Events
+
+| name           | type          | description                                                                       |
+|----------------|---------------|-----------------------------------------------------------------------------------|
+| ready          | ModuleContext | ModuleConfig has been fetched and set for the first time.                         |
+| config-updated | ModuleContext | ModuleConfig has been update through polling or event (depends on kafka setting). |

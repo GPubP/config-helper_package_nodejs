@@ -6,7 +6,7 @@
 		"outDir": "dist",
 		"declarationDir": "dist",
 		"declaration": true,
-		"rootDir": "src",
+		"rootDir": ".",
 		"target": "es6",
 		"watch": false,
 		"allowSyntheticDefaultImports": true,
