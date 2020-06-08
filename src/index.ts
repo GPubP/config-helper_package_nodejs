@@ -16,11 +16,13 @@ import {
 	ModuleContext,
 	PortalConfig,
 } from './index.types';
-import { WcmDigipolisSystemConsumer } from './kafka/consumers/wcm-digipolis.system';
+import { WcmDigipolisModulesConsumer } from './kafka/consumers/wcm-digipolis.modules';
+import { WcmDigipolisTenantsConsumer } from './kafka/consumers/wcm-digipolis.tenants';
 import { createKafkaInstance } from './kafka/kafka';
 
 export class TenantsConfig extends EventEmitter {
-	public systemKafkaConsumer: WcmDigipolisSystemConsumer;
+	public tenantsKafkaConsumer: WcmDigipolisTenantsConsumer;
+	public modulesKafkaConsumer: WcmDigipolisModulesConsumer;
 
 	private portalConfig: PortalConfig;
 	private moduleContext: ModuleContext;
@@ -167,11 +169,19 @@ export class TenantsConfig extends EventEmitter {
 
 	private initKafka(): void {
 		this.kafka = createKafkaInstance(this.portalConfig.kafka);
-		this.systemKafkaConsumer = new WcmDigipolisSystemConsumer(this.kafka, this.portalConfig.kafka);
+		this.tenantsKafkaConsumer = new WcmDigipolisTenantsConsumer(this.kafka, this.portalConfig.kafka);
+		this.modulesKafkaConsumer = new WcmDigipolisModulesConsumer(this.kafka, this.portalConfig.kafka);
 
-		this.systemKafkaConsumer.on('tenant-created', () => this.onTick());
-		this.systemKafkaConsumer.on('tenant-removed', () => this.onTick());
-		this.systemKafkaConsumer.on('tenant-updated', () => this.onTick());
+		this.tenantsKafkaConsumer.on([
+			'tenant-created',
+			'tenant-updated',
+			'tenant-removed',
+		], () => this.onTick());
+
+		this.modulesKafkaConsumer.on([
+			'module-updated',
+			'module-removed',
+		], () => this.onTick());
 	}
 
 	private onTick(): void {
