@@ -82,7 +82,7 @@ export class TenantsConfig extends EventEmitter {
 
 				req.locals = {
 					...req.locals,
-					requestContex: jwt.decode(token),
+					requestContext: context as GatewayJWTContent,
 				};
 
 				next();
