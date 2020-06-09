@@ -52,7 +52,7 @@ export class TenantsConfig extends EventEmitter {
 			return next(UnauthorizedError);
 		}
 
-		const linkedApp = this.moduleContext.appsAccess.find(app => app.apikey === req.headers.apikey);
+		const linkedApp = (this.moduleContext?.appsAccess || []).find(app => app.apikey === req.headers.apikey);
 
 		if (!linkedApp) {
 			return next(UnauthorizedError);
@@ -67,7 +67,7 @@ export class TenantsConfig extends EventEmitter {
 		}
 
 		return (req: BSLRequest, res: Response, next: Function): void => {
-			if (typeof req.headers.authorization !== 'string') {
+			if (!/^token /i.exec(req.get('authorization'))) {
 				return next();
 			}
 
@@ -95,15 +95,15 @@ export class TenantsConfig extends EventEmitter {
 	}
 
 	public getAppContext(apikey: string): AppContext {
-		return this.moduleContext.appsAccess.find(app => app.apikey === apikey);
+		return (this.moduleContext?.appsAccess || []).find(app => app.apikey === apikey);
 	}
 
 	public getAllApps(): AppContext[] {
-		return this.moduleContext.appsAccess;
+		return this.moduleContext?.appsAccess;
 	}
 
 	public getModuleContext(): ModuleConfig {
-		return clone(this.moduleContext.moduleConfiguration);
+		return clone(this.moduleContext?.moduleConfiguration);
 	}
 
 	public async requestModule<T = unknown>(
@@ -112,7 +112,7 @@ export class TenantsConfig extends EventEmitter {
 		method: Method,
 		path: string,
 		params?: GotOptions
-	): Promise<GotResponse<T>> {
+	): Promise<T> {
 		const appContext = this.getAppContext(tenantApikey);
 
 		if (!appContext) {
@@ -143,7 +143,7 @@ export class TenantsConfig extends EventEmitter {
 				body: e?.response?.body,
 				error: e,
 			};
-		});
+		}) as unknown as T;
 	}
 
 	public AppContext = createParamDecorator( // tslint:disable-line variable-name
@@ -156,7 +156,7 @@ export class TenantsConfig extends EventEmitter {
 	);
 
 	public getAppsFeaturingModule(routePrefix: string, moduleVersion: string): AppContext[] {
-		return this.moduleContext.appsAccess.reduce((acc, app) => {
+		return (this.moduleContext?.appsAccess || []).reduce((acc, app) => {
 			const hasModule = !!app.modules.find(mod => mod?.module?.data?.routePrefix === routePrefix && (!moduleVersion || mod.version === moduleVersion));
 			return acc.concat(hasModule ? [app] : []);
 		}, []);

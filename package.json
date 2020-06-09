@@ -9,6 +9,7 @@
     "build:watch": "tsc -w",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "test": "jest --config jest.config.js --runInBand --verbose false",
+    "test:watch": "jest --config jest.config.js --runInBand --verbose false --watch",
     "install:peers": "install-peers -f"
   },
   "publishConfig": {
