@@ -71,7 +71,7 @@ export class TenantsConfig extends EventEmitter {
 				return next();
 			}
 
-			const token = req.headers.authorization.replace(/^token /i, '');
+			const token = req.get('authorization').replace(/^token /i, '');
 
 			jwt.verify(token, jwtPublicKey, { algorithms: ['RS256'] }, (err, context) => {
 				if (err || !context) {
@@ -124,7 +124,7 @@ export class TenantsConfig extends EventEmitter {
 		);
 
 		if (!moduleContext) {
-			throw new Error(`Could not find module with endpoint ${moduleRoutePrefix} for tenant ${appContext.name}`);
+			throw new Error(`Could not find module with endpoint ${moduleRoutePrefix} for tenant ${appContext?.name}`);
 		}
 
 		return await got<T>(path.replace(/^\//, ''), {

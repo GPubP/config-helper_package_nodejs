@@ -1,0 +1,7 @@
+{
+	"build": {
+		"test": {
+			"script": "echo 'tests are run in docker build'"
+		}
+	}
+}
