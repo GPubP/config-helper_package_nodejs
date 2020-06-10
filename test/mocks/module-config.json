@@ -30,7 +30,7 @@
                     "name": "Content types module",
                     "packageName": "@redactie/content-types",
                     "version": "1.0.0",
-                    "description": "",
+					"description": "",
                     "dependencies": [
                         {
                             "module": "5e58bef72f9bc702da6b69e8",
@@ -64,10 +64,16 @@
                 },
                 {
                     "name": "Users & Roles bsl",
-                    "endpoint": "https://test.be",
+                    "endpoint": "http://test.be",
                     "description": "",
                     "version": "2.0.0",
-                    "dependencies": []
+					"dependencies": [],
+					"module": {
+						"data": {
+							"moduleType": "business-service",
+							"routePrefix": "users-roles"
+						}
+					}
                 },
                 {
                     "name": "Users & Roles engine",

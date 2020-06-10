@@ -6,7 +6,7 @@
 		"outDir": "dist",
 		"declarationDir": "dist",
 		"declaration": true,
-		"rootDir": ".",
+		"rootDir": "./src",
 		"target": "es6",
 		"watch": false,
 		"allowSyntheticDefaultImports": true,
@@ -34,12 +34,12 @@
 	},
 	"include": [
 		"index.ts",
-		"src/**/*.ts",
-		"src/**/*.spec.ts"
+		"src/**/*.ts"
 	],
 	"exclude": [
 		"**/coverage/**",
 		"**/dist/**",
-		"**/node_modules/**"
+		"**/node_modules/**",
+		"src/**/*.spec.ts"
 	]
 }
