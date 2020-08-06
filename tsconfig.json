@@ -33,7 +33,6 @@
 		"paths": {}
 	},
 	"include": [
-		"index.ts",
 		"src/**/*.ts"
 	],
 	"exclude": [

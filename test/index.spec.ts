@@ -6,7 +6,6 @@ import { mockReq, mockRes } from 'sinon-express-mock';
 import { TenantsConfig } from '../src/index';
 import { wait } from './helpers/wait';
 import * as mockConfig from './mocks/module-config.json';
-import { config } from 'rxjs';
 
 describe('ApiKeyGuard', () => {
 	let config: TenantsConfig;
@@ -31,6 +30,7 @@ describe('ApiKeyGuard', () => {
 	it('should block requests without a header', () => {
 		return config.apiKeyGuard({
 			headers: {},
+		// tslint:disable-next-line: no-any
 		} as any, null, (error) => {
 			expect(error.status).toEqual(401);
 			expect(error.code).toEqual('Unauthorized');
@@ -42,6 +42,7 @@ describe('ApiKeyGuard', () => {
 			headers: {
 				apikey: 'incorrect',
 			},
+		// tslint:disable-next-line: no-any
 		} as any, null, (error) => {
 			expect(error.status).toEqual(401);
 			expect(error.code).toEqual('Unauthorized');
@@ -53,6 +54,7 @@ describe('ApiKeyGuard', () => {
 			headers: {
 				apikey: '02666a7b-7219-488c-bab9-021f3dd8dad9',
 			},
+		// tslint:disable-next-line: no-any
 		} as any, null, (error) => {
 			expect(error).toEqual(undefined);
 		});
@@ -86,6 +88,17 @@ describe('Request Module', () => {
 			.then((response) => {
 				expect(response).toEqual({ message: 'OK' });
 			});
+	});
+
+	it('should make requests as stream', async () => {
+		nock('http://test.be')
+			.get('/test')
+			.matchHeader('apikey', '02666a7b-7219-488c-bab9-021f3dd8dad9')
+			.reply(200, { message: 'OK' });
+
+		const stream = await config.requestModule('02666a7b-7219-488c-bab9-021f3dd8dad9', 'users-roles', 'GET', '/test', { isStream: true });
+
+		expect(stream.constructor.name).toEqual('DuplexWrapper');
 	});
 
 	it('should throw error when request failed', () => {
