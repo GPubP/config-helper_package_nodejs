@@ -3,7 +3,8 @@ import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 import { CronJob } from 'cron';
 import { EventEmitter } from 'events';
 import { Request, Response } from 'express';
-import got, { GotOptions, Method, Response as GotResponse } from 'got';
+import got, { GotOptions, Method } from 'got';
+import { ProxyStream } from 'got/dist/source/as-stream';
 import jwt from 'jsonwebtoken';
 import { clone, pathOr, propOr } from 'ramda';
 
@@ -111,8 +112,22 @@ export class TenantsConfig extends EventEmitter {
 		moduleRoutePrefix: string,
 		method: Method,
 		path: string,
+		params?: GotOptions & { isStream: false | null | undefined }
+	): Promise<T>;
+	public async requestModule<T = unknown>(
+		tenantApikey: string,
+		moduleRoutePrefix: string,
+		method: Method,
+		path: string,
+		params: GotOptions & { isStream: true }
+	): Promise<ProxyStream>;
+	public async requestModule<T = unknown>(
+		tenantApikey: string,
+		moduleRoutePrefix: string,
+		method: Method,
+		path: string,
 		params?: GotOptions
-	): Promise<T> {
+	): Promise<T | ProxyStream<T>> {
 		const appContext = this.getAppContext(tenantApikey);
 
 		if (!appContext) {
@@ -127,7 +142,7 @@ export class TenantsConfig extends EventEmitter {
 			throw new Error(`Could not find module with endpoint ${moduleRoutePrefix} for tenant ${appContext?.name}`);
 		}
 
-		return await got<T>(path.replace(/^\//, ''), {
+		const promise = got<T>(path.replace(/^\//, ''), {
 			...params || {} as unknown as any, // tslint:disable-line no-any
 			method,
 			prefixUrl: moduleContext.endpoint,
@@ -137,13 +152,19 @@ export class TenantsConfig extends EventEmitter {
 				...propOr({}, 'headers')(params),
 				apikey: appContext.apikey,
 			},
-		}).catch((e) => {
+		});
+
+		if (params?.isStream) {
+			return Promise.resolve(promise as unknown as ProxyStream);
+		}
+
+		return promise.catch((e) => {
 			throw {
 				status: e?.response?.statusCode,
 				body: e?.response?.body,
 				error: e,
 			};
-		}) as unknown as T;
+		}) as unknown as Promise<T>;
 	}
 
 	public AppContext = createParamDecorator( // tslint:disable-line variable-name
