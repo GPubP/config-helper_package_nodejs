@@ -17,7 +17,7 @@ describe('ApiKeyGuard', () => {
 
 		config = new TenantsConfig({
 			apikey: '000-000',
-			baseUrl: 'http://mocked-url.com',
+			baseUrl: 'http://mocked-url.com/api/1.0.0',
 			cronFrequency: '0 0 1 1 1',
 		});
 
@@ -71,7 +71,7 @@ describe('Request Module', () => {
 
 		config = new TenantsConfig({
 			apikey: '000-000',
-			baseUrl: 'http://mocked-url.com',
+			baseUrl: 'http://mocked-url.com/api/1.0.0',
 			cronFrequency: '0 0 1 1 1',
 		});
 
@@ -147,7 +147,7 @@ describe('verifyJwt', () => {
 
 		config = new TenantsConfig({
 			apikey: '000-000',
-			baseUrl: 'http://mocked-url.com',
+			baseUrl: 'http://mocked-url.com/api/1.0.0',
 			cronFrequency: '0 0 1 1 1',
 		});
 
@@ -223,7 +223,7 @@ describe('getJWTContent', () => {
 
 		config = new TenantsConfig({
 			apikey: '000-000',
-			baseUrl: 'http://mocked-url.com',
+			baseUrl: 'http://mocked-url.com/api/1.0.0',
 			cronFrequency: '0 0 1 1 1',
 		});
 
@@ -271,7 +271,7 @@ describe('getAllApps', () => {
 
 		config = new TenantsConfig({
 			apikey: '000-000',
-			baseUrl: 'http://mocked-url.com',
+			baseUrl: 'http://mocked-url.com/api/1.0.0',
 			cronFrequency: '0 0 1 1 1',
 		});
 
@@ -295,7 +295,7 @@ describe('getModuleContext', () => {
 
 		config = new TenantsConfig({
 			apikey: '000-000',
-			baseUrl: 'http://mocked-url.com',
+			baseUrl: 'http://mocked-url.com/api/1.0.0',
 			cronFrequency: '0 0 1 1 1',
 		});
 
