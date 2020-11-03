@@ -211,7 +211,7 @@ export class TenantsConfig extends EventEmitter {
 	}
 
 	private fetchConfig(): Promise<ModuleContext> {
-		return got.get<ModuleContext>(`${this.portalConfig.baseUrl}/api/1.0.0/modules/config`, {
+		return got.get<ModuleContext>(`${this.portalConfig.baseUrl}/modules/config`, {
 			responseType: 'json',
 			headers: {
 				apikey: this.portalConfig.apikey,
