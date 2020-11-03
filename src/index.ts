@@ -112,14 +112,14 @@ export class TenantsConfig extends EventEmitter {
 		moduleRoutePrefix: string,
 		method: Method,
 		path: string,
-		params?: GotOptions & { isStream: false | null | undefined }
+		params?: GotOptions & { isStream?: false | null | undefined }
 	): Promise<T>;
 	public async requestModule<T = unknown>(
 		tenantApikey: string,
 		moduleRoutePrefix: string,
 		method: Method,
 		path: string,
-		params: GotOptions & { isStream: true }
+		params: GotOptions & { isStream?: true }
 	): Promise<ProxyStream>;
 	public async requestModule<T = unknown>(
 		tenantApikey: string,
