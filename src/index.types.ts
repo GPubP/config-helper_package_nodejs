@@ -18,6 +18,7 @@ export interface ModuleConfig {
 	data: {
 		name: string;
 		moduleType: string;
+		routePrefix: string;
 		versions: {
 			version: string;
 			description: string;
