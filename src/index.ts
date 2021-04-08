@@ -109,9 +109,9 @@ export class TenantsConfig extends EventEmitter {
 
 	public getAppModuleConfig(tenantUuid: string): Record<string, string | Object> {
 		const app = (this.moduleContext?.appsAccess || []).find(app => app.uuid === tenantUuid);
-		const module = app.modules.find(moduleInfo => moduleInfo.module.uuid === this.moduleContext.moduleConfiguration.uuid);
+		const module = app?.modules.find(moduleInfo => moduleInfo.module.uuid === this.moduleContext.moduleConfiguration.uuid);
 
-		return module.config || {};
+		return module?.config || {};
 	}
 
 	public async requestModule<T = unknown>(

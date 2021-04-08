@@ -285,6 +285,35 @@ describe('getAllApps', () => {
 	});
 });
 
+describe('getAppModuleConfig', () => {
+	let config: TenantsConfig;
+
+	beforeEach(async() => {
+		nock('http://mocked-url.com')
+			.get('/api/1.0.0/modules/config')
+			.reply(200, mockConfig);
+
+		config = new TenantsConfig({
+			apikey: '000-000',
+			baseUrl: 'http://mocked-url.com/api/1.0.0',
+			cronFrequency: '0 0 1 1 1',
+		});
+
+		await wait(500);
+	});
+
+	it('should get a custom module config for a tenant', () => {
+		const result = config.getAppModuleConfig('test-key');
+
+		expect(result).toEqual({ test: true });
+	});
+	it('should handle a wrong tenantkey', () => {
+		const result = config.getAppModuleConfig('wrong-key');
+
+		expect(result).toEqual({});
+	});
+});
+
 describe('getModuleContext', () => {
 	let config: TenantsConfig;
 
