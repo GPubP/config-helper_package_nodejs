@@ -54,6 +54,8 @@ export interface AppModuleVersion {
 	description: string;
 	version: string;
 	dependencies: Dependency[];
+	// tslint:disable-next-line: no-any
+	config?: any;
 }
 
 export interface AppContext {
