@@ -235,6 +235,17 @@ interface ModuleConfig {
 };
 ```
 
+### getAppModuleConfig
+Get the custom module config for a tenant received from wcm-admin.
+In the website config in wcm-admin, a module can be given additional custom config for a specific tenant (JSon format). 
+Use this method to retrieve this custom config in a BSL. 
+It is strongly advised to cache this response in the BSL for performance reasons.
+
+```ts
+// Returns the JSon object as stored in wcm-admin
+const customConfig = tenantConfig.getAppModuleConfig(tenantUuid);
+```
+
 ## Events
 
 | name           | type          | description                                                                       |

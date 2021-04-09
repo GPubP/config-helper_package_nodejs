@@ -23,10 +23,14 @@
     },
     "appsAccess": [
         {
+            "uuid": "test-key",
             "name": "super-coole-website",
             "apikey": "02666a7b-7219-488c-bab9-021f3dd8dad9",
             "modules": [
                 {
+                    "module": {
+						"uuid": "1"
+                    },
                     "name": "Content types module",
                     "packageName": "@redactie/content-types",
                     "version": "1.0.0",
@@ -43,6 +47,9 @@
                     ]
                 },
                 {
+                    "module": {
+						"uuid": "2"
+                    },
                     "name": "Content bundle",
                     "packageName": "@redactie/content-bundle",
                     "description": "",
@@ -69,6 +76,7 @@
                     "version": "2.0.0",
 					"dependencies": [],
 					"module": {
+                        "uuid": "3",
 						"data": {
 							"moduleType": "business-service",
 							"routePrefix": "users-roles"
@@ -76,6 +84,9 @@
 					}
                 },
                 {
+                    "module": {
+						"uuid": "4"
+                    },
                     "name": "Users & Roles engine",
                     "endpoint": "https://users-roles-engine.digipolis.be",
                     "description": "",
@@ -83,6 +94,9 @@
                     "dependencies": []
                 },
                 {
+                    "module": {
+						"uuid": "5"
+                    },
                     "name": "Content types engine",
                     "version": "1.0.0",
                     "description": "",
@@ -90,6 +104,9 @@
                     "dependencies": []
                 },
                 {
+                    "module": {
+						"uuid": "6"
+                    },
                     "name": "Form renderer",
                     "packageName": "@redactie/form-renderer",
                     "version": "1.0.0",
@@ -106,6 +123,9 @@
                     ]
                 },
                 {
+                    "module": {
+						"uuid": "7"
+                    },
                     "name": "Field types engine",
                     "endpoint": "https://field-types-engine.digipolis.be/v1",
                     "description": "",
@@ -113,6 +133,20 @@
                     "dependencies": []
                 },
                 {
+                    "module": {
+						"uuid": "fba9aab8-eefe-4069-a25d-76d2c13b24f9"
+                    },
+                    "name": "Navigation BSL",
+                    "version": "1.0.0",
+                    "description": "Navigation BSL",
+                    "endpoint": "http://localhost:3000",
+                    "dependencies": [],
+                    "config": { "test": true }
+                },
+                {
+                    "module": {
+						"uuid": "8"
+                    },
                     "name": "Field types bsl",
                     "endpoint": "https//field-types-bsl.digipolis.be",
                     "description": "",
@@ -129,6 +163,9 @@
                     ]
                 },
                 {
+                    "module": {
+						"uuid": "9"
+                    },
                     "name": "Test engine",
                     "version": "1.0.0",
                     "description": "",
