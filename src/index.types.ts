@@ -63,6 +63,7 @@ export interface AppContext {
 	uuid: string;
 	name: string;
 	apikey: string;
+	allApiKeys: string[];
 	modules: AppModuleVersion[];
 }
 

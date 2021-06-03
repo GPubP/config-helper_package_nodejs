@@ -53,7 +53,7 @@ export class TenantsConfig extends EventEmitter {
 			return next(UnauthorizedError);
 		}
 
-		const linkedApp = (this.moduleContext?.appsAccess || []).find(app => app.apikey === req.headers.apikey);
+		const linkedApp = (this.moduleContext?.appsAccess || []).find(app =>  app.allApiKeys.includes(req.headers.apikey as string));
 
 		if (!linkedApp) {
 			return next(UnauthorizedError);
