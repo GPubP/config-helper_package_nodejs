@@ -96,7 +96,7 @@ export class TenantsConfig extends EventEmitter {
 	}
 
 	public getAppContext(apikey: string): AppContext {
-		return (this.moduleContext?.appsAccess || []).find(app =>  app.allApiKeys.includes(apikey as string));
+		return (this.moduleContext?.appsAccess || []).find(app => app.apikey === apikey);
 	}
 
 	public getAllApps(): AppContext[] {
