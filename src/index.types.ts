@@ -84,6 +84,7 @@ export interface GatewayJWTContent {
 	tenantKey: string;
 	userToken: string;
 	contract: string;
+	consumerUsername: string;
 	iat: number;
 }
 
