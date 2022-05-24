@@ -32,7 +32,7 @@ ___
 | `moduleType` | `string` |
 | `name` | `string` |
 | `routePrefix` | `string` |
-| `versions` | { `dependencies`: `Dependency`[] ; `description`: `string` ; `endpoint`: `string` ; `version`: `string`  }[] |
+| `versions` | { `dependencies`: [`Dependency`](../wiki/%3Cinternal%3E.Dependency)[] ; `description`: `string` ; `endpoint`: `string` ; `version`: `string`  }[] |
 
 #### Defined in
 

@@ -27,7 +27,7 @@ ___
 
 ### dependencies
 
-• **dependencies**: `Dependency`[]
+• **dependencies**: [`Dependency`](../wiki/%3Cinternal%3E.Dependency)[]
 
 #### Defined in
 

@@ -2,6 +2,10 @@
 
 ## Table of contents
 
+### Namespaces
+
+- [&lt;internal\&gt;](../wiki/%3Cinternal%3E)
+
 ### Classes
 
 - [TenantsConfig](../wiki/TenantsConfig)
