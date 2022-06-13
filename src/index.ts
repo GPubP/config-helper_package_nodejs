@@ -158,6 +158,7 @@ export class TenantsConfig extends EventEmitter {
 			headers: {
 				...propOr({}, 'headers')(params),
 				apikey: appContext.apikey,
+				'x-module-id': this.moduleContext.moduleConfiguration.uuid
 			},
 		});
 
