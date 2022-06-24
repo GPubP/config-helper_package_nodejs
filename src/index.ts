@@ -150,14 +150,15 @@ export class TenantsConfig extends EventEmitter {
 		}
 
 		const promise = got<T>(path.replace(/^\//, ''), {
+			responseType: 'json',
+			resolveBodyOnly: true,
 			...params || {} as unknown as any, // tslint:disable-line no-any
 			method,
 			prefixUrl: moduleContext.endpoint,
-			responseType: 'json',
-			resolveBodyOnly: true,
 			headers: {
 				...propOr({}, 'headers')(params),
 				apikey: appContext.apikey,
+				'x-module-id': this.moduleContext.moduleConfiguration.uuid
 			},
 		});
 
