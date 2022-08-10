@@ -40,10 +40,9 @@ export class TenantsConfig extends EventEmitter {
 
 		if (portalConfig.kafka) {
 			this.initKafka();
-		} else {
-			this.initCron();
 		}
 
+		this.initCron();
 		this.fetchConfig()
 			.then(moduleContext => this.emit('ready', moduleContext));
 	}
@@ -205,17 +204,17 @@ export class TenantsConfig extends EventEmitter {
 			'tenant-created',
 			'tenant-updated',
 			'tenant-removed',
-		], () => this.onTick());
+		], (key) => this.onTick(key as string));
 
 		this.modulesKafkaConsumer.on([
 			'module-updated',
 			'module-removed',
-		], () => this.onTick());
+		], (key) => this.onTick(key as string));
 	}
 
-	private onTick(): void {
+	private onTick(key: string = 'config-updated'): void {
 		this.fetchConfig()
-			.then(moduleContext => this.emit('config-updated', moduleContext));
+			.then(moduleContext => this.emit(key, moduleContext));
 	}
 
 	private fetchConfig(): Promise<ModuleContext> {
