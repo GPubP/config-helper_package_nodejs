@@ -157,7 +157,7 @@ export class TenantsConfig extends EventEmitter {
 			headers: {
 				...propOr({}, 'headers')(params),
 				apikey: appContext.apikey,
-				'x-module-id': this.moduleContext.moduleConfiguration.uuid
+				'x-module-id': this.moduleContext.moduleConfiguration.uuid,
 			},
 		});
 
@@ -204,12 +204,12 @@ export class TenantsConfig extends EventEmitter {
 			'tenant-created',
 			'tenant-updated',
 			'tenant-removed',
-		], (key) => this.onTick(key as string));
+		], data => this.onTick(propOr('config-updated', 'key', data)));
 
 		this.modulesKafkaConsumer.on([
 			'module-updated',
 			'module-removed',
-		], (key) => this.onTick(key as string));
+		], data => this.onTick(propOr('config-updated', 'key', data)));
 	}
 
 	private onTick(key: string = 'config-updated'): void {
