@@ -26,6 +26,9 @@
             "uuid": "test-key",
             "name": "super-coole-website",
             "apikey": "02666a7b-7219-488c-bab9-021f3dd8dad9",
+			"allApiKeys": [
+				"02666a7b-7219-488c-bab9-021f3dd8dad9"
+            ],
             "modules": [
                 {
                     "module": {
