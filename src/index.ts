@@ -141,7 +141,7 @@ export class TenantsConfig extends EventEmitter {
 		}
 
 		const moduleContext = appContext.modules.find(modu =>
-			modu?.module?.data?.moduleType === 'business-service' && modu?.module?.data?.routePrefix === moduleRoutePrefix
+			(modu?.module?.data?.moduleType === 'business-service' || modu?.module?.data?.moduleType === 'core-component') && modu?.module?.data?.routePrefix === moduleRoutePrefix
 		);
 
 		if (!moduleContext) {
