@@ -141,7 +141,9 @@ export class TenantsConfig extends EventEmitter {
 		}
 
 		const moduleContext = appContext.modules.find(modu =>
-			(modu?.module?.data?.moduleType === 'business-service' || modu?.module?.data?.moduleType === 'core-component') && modu?.module?.data?.routePrefix === moduleRoutePrefix
+			(modu?.module?.data?.moduleType === 'business-service' ||
+				modu?.module?.data?.moduleType === 'core-component') &&
+				modu?.module?.data?.routePrefix === moduleRoutePrefix
 		);
 
 		if (!moduleContext) {
@@ -209,12 +211,15 @@ export class TenantsConfig extends EventEmitter {
 		this.modulesKafkaConsumer.on([
 			'module-updated',
 			'module-removed',
-		], data => this.onTick(propOr('config-updated', 'key', data)));
+		], data => this.onTick(propOr('config-updated', 'key', data), { moduleId: (data as { body: { uuid: string } }).body.uuid }));
 	}
 
-	private onTick(key: string = 'config-updated'): void {
+	private onTick(key: string = 'config-updated', data?: Record<string, unknown>): void {
 		this.fetchConfig()
-			.then(moduleContext => this.emit(key, moduleContext));
+			.then(moduleContext => this.emit(key, {
+				...moduleContext,
+				...data,
+			}));
 	}
 
 	private fetchConfig(): Promise<ModuleContext> {
