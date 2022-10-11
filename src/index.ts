@@ -211,7 +211,7 @@ export class TenantsConfig extends EventEmitter {
 		this.modulesKafkaConsumer.on([
 			'module-updated',
 			'module-removed',
-		], data => this.onTick(propOr('config-updated', 'key', data), data as any));
+		], data => this.onTick(propOr('config-updated', 'key', data), { moduleId: (data as { value: { uuid: string } })?.value?.uuid }));
 	}
 
 	private onTick(key: string = 'config-updated', data?: Record<string, unknown>): void {
