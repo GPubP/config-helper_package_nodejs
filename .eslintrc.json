@@ -1,26 +1,43 @@
 {
+	"plugins": ["@typescript-eslint/eslint-plugin", "import"],
 	"extends": [
-		"eslint:recommended",
-		"airbnb-base"
+		"plugin:@typescript-eslint/recommended"
 	],
-	"plugins": [
-		"json"
-	],
-	"env": {
-		"node": true
+	"parser": "@typescript-eslint/parser",
+	"parserOptions": {
+		"warnOnUnsupportedTypeScriptVersion": false
 	},
 	"rules": {
-		"import/no-unresolved": 0,
-		"indent": [2, "tab"],
-		"max-len": [2, 160, 2, {
-			"ignoreUrls": true,
-			"ignoreComments": true,
-			"ignoreRegExpLiterals": true,
-			"ignoreStrings": true,
-			"ignoreTemplateLiterals": true
-		}],
-		"no-tabs": [0, {
-			"allowIndentationTabs": true
-		}]
+		"indent": ["error", "tab"],
+		"no-tabs": ["error", { "allowIndentationTabs": true }],
+		"max-len": ["error", { "code": 160 }],
+		"no-console": "error",
+		"object-property-newline": "error",
+		"curly": "error",
+		"object-curly-newline": ["error", { "multiline": true }],
+		"object-curly-spacing": ["error", "always"],
+		"@typescript-eslint/no-explicit-any": "error",
+		"import/order": [
+			2,
+			{
+				"alphabetize": { "order": "asc" },
+				"groups": [
+					[
+						"builtin",
+						"external"
+					],
+					[
+						"internal",
+						"unknown"
+					],
+					[
+						"parent",
+						"sibling",
+						"index"
+					]
+				],
+				"newlines-between": "always"
+			}
+		]
 	}
 }

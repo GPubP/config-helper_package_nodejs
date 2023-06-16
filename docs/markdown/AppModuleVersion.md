@@ -17,11 +17,11 @@
 
 ### config
 
-• `Optional` **config**: `any`
+• `Optional` **config**: `unknown`
 
 #### Defined in
 
-src/index.types.ts:58
+src/index.types.ts:57
 
 ___
 

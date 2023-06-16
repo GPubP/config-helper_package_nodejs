@@ -1,53 +1,45 @@
-const { pathsToModuleNameMapper } = require('ts-jest/utils');
-
-const { compilerOptions } = require('./tsconfig.json');
-
-module.exports = {
+export default {
 	verbose: false,
 	displayName: 'SERVER',
 	rootDir: '.',
-	preset: 'ts-jest',
+	preset: 'ts-jest/presets/default-esm',
 	testEnvironment: 'node',
-	globals: {
-		'ts-jest': {
-			diagnostics: false,
-		},
-	},
 	collectCoverage: true,
 	collectCoverageFrom: [
-		'<rootDir>/src/**/*.ts',
+		'<rootDir>/src/**/*.[jt]s'
 	],
 	coverageDirectory: './test/coverage',
 	coverageReporters: [
 		'lcov',
-		'text',
+		'text'
 	],
 	coverageThreshold: {
 		global: {
 			branches: 80,
 			functions: 80,
 			lines: 80,
-			statements: 80,
-		},
+			statements: 80
+		}
 	},
 	moduleFileExtensions: [
 		'js',
 		'json',
-		'ts',
+		'ts'
 	],
-	moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, { prefix: '<rootDir>/' }),
-	transform: {
-		'.*/.ts$': 'ts-jest',
-	},
+	moduleNameMapper: { '^(\\.{1,2}/.*)\\.js$': '$1', },
+	transform: { '.*/.[jt]s$': ['ts-jest', { useESM: true }] },
 	testMatch: [
 		'<rootDir>/src/**/*.spec.[jt]s',
-		'<rootDir>/test/**/*.spec.[jt]s',
+		'<rootDir>/test/**/*.spec.[jt]s'
 	],
 	testPathIgnorePatterns: [
-		'<rootDir>/src/dist',
+		'<rootDir>/src/dist'
 	],
 	setupFilesAfterEnv: [
-		'jest-extended',
+		'jest-extended'
 	],
 	forceExit: true,
+	extensionsToTreatAsEsm: [
+		".ts"
+	],
 };

@@ -1,13 +1,19 @@
+import Kafka from '@acpaas/kafka-nodejs-helper';
+import { jest } from '@jest/globals';
+
+import { WcmDigipolisTenantsConsumer } from './wcm-digipolis.tenants';
 import { wait } from '../../../test/helpers/wait';
 import { KafkaConfig } from '../kafka.types';
-import { WcmDigipolisTenantsConsumer } from './wcm-digipolis.tenants';
 
 const kafkaMock = {
-	subscribe: jest.fn(async({ topic, callback }) => {
+	subscribe: jest.fn(async ({ callback }) => {
 		await wait(1);
-		callback({ key: 'some-key', body: {} });
+		callback({
+			key: 'some-key',
+			body: {}
+		});
 	}),
-};
+} as unknown as Kafka;
 
 describe('[UNIT - KAFKA] wcm-digipolis.tenants consumer', () => {
 	it('should not subscribe to kafka topic if no host is specified', () => {
@@ -44,16 +50,25 @@ describe('[UNIT - KAFKA] wcm-digipolis.tenants consumer', () => {
 				tenants: 'subscriber-tenants',
 			},
 		} as unknown as KafkaConfig;
-		const instance = new WcmDigipolisTenantsConsumer(kafkaMock, kafkaConfig);
+		const instance = new WcmDigipolisTenantsConsumer(
+			kafkaMock,
+			kafkaConfig,
+		);
 
 		instance.on('some-key', listenerFunc);
 
 		await wait(1);
 
 		expect(kafkaMock.subscribe).toHaveBeenCalled();
-		expect((kafkaMock.subscribe as jest.Mock).mock.calls[0][0]).toHaveProperty('topic', 'tenants-topic'),
-		expect((kafkaMock.subscribe as jest.Mock).mock.calls[0][0]).toHaveProperty('groupId', 'subscriber-tenants'),
-
-		expect(listenerFunc).toHaveBeenCalledWith({ key: 'some-key', body: {} });
+		expect(
+			(kafkaMock.subscribe as jest.Mock).mock.calls[0][0],
+		).toHaveProperty('topic', 'tenants-topic'),
+		expect(
+			(kafkaMock.subscribe as jest.Mock).mock.calls[0][0],
+		).toHaveProperty('groupId', 'subscriber-tenants'),
+		expect(listenerFunc).toHaveBeenCalledWith({
+			key: 'some-key',
+			body: {},
+		});
 	});
 });

@@ -1,16 +1,19 @@
 import Kafka from '@acpaas/kafka-nodejs-helper';
 
-import { KafkaConfig } from './kafka.types';
+import { KafkaConfig } from './kafka.types.js';
 
-export const createKafkaInstance = (config: KafkaConfig) => new Kafka({
-	kafkaHost: config.host,
-	origin: config.origin,
-	...(config.ca ? {
-		ssl: {
-			rejectUnauthorized: true,
-			ca: [config.ca],
-			key: config.key,
-			cert: config.cert,
-		},
-	} : null),
-});
+export const createKafkaInstance = (config: KafkaConfig) =>
+	new Kafka({
+		kafkaHost: config.host,
+		origin: config.origin,
+		...(config.ca
+			? {
+				ssl: {
+					rejectUnauthorized: true,
+					ca: [config.ca],
+					key: config.key,
+					cert: config.cert,
+				},
+			}
+			: null),
+	});

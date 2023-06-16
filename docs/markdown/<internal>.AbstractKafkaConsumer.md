@@ -133,4 +133,4 @@ ___
 
 #### Defined in
 
-src/kafka/consumers/AbstractKafkaConsumer.ts:35
+src/kafka/consumers/AbstractKafkaConsumer.ts:38
