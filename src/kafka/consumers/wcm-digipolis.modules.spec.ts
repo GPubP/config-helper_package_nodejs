@@ -12,7 +12,7 @@ const kafkaMock = {
 			key: 'some-key',
 			body: {}
 		});
-	}),
+	})
 } as unknown as Kafka;
 
 describe('[UNIT - KAFKA] wcm-digipolis.system consumer', () => {
@@ -22,13 +22,13 @@ describe('[UNIT - KAFKA] wcm-digipolis.system consumer', () => {
 			topics: {
 				system: 'system-topic',
 				modules: 'modules-topic',
-				tenants: 'tenants-topic',
+				tenants: 'tenants-topic'
 			},
 			subscribers: {
 				system: 'subscriber-system',
 				modules: 'subscriber-modules',
-				tenants: 'subscriber-tenants',
-			},
+				tenants: 'subscriber-tenants'
+			}
 		} as unknown as KafkaConfig;
 		new WcmDigipolisModulesConsumer(kafkaMock, kafkaConfig);
 
@@ -42,13 +42,13 @@ describe('[UNIT - KAFKA] wcm-digipolis.system consumer', () => {
 			topics: {
 				system: 'system-topic',
 				modules: 'modules-topic',
-				tenants: 'tenants-topic',
+				tenants: 'tenants-topic'
 			},
 			subscribers: {
 				system: 'subscriber-system',
 				modules: 'subscriber-modules',
-				tenants: 'subscriber-tenants',
-			},
+				tenants: 'subscriber-tenants'
+			}
 		} as unknown as KafkaConfig;
 		const instance = new WcmDigipolisModulesConsumer(
 			kafkaMock,
@@ -68,7 +68,7 @@ describe('[UNIT - KAFKA] wcm-digipolis.system consumer', () => {
 		).toHaveProperty('groupId', 'subscriber-modules'),
 		expect(listenerFunc).toHaveBeenCalledWith({
 			key: 'some-key',
-			body: {},
+			body: {}
 		});
 	});
 });

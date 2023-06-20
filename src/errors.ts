@@ -6,5 +6,5 @@ export const UnauthorizedError = Object.freeze({
 	title: 'You are not authorized to use this endpoint',
 	status: 401,
 	identifier: uuid.v4(),
-	code: 'Unauthorized',
+	code: 'Unauthorized'
 });

@@ -1,6 +1,6 @@
 import { Request } from 'express';
 
-import { KafkaConfig } from './kafka/kafka.types.js';
+import { KafkaConfig } from './kafka/kafka.types';
 
 interface Dependency {
 	version: string;

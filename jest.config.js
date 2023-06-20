@@ -1,18 +1,18 @@
-export default {
+/* eslint-disable @typescript-eslint/no-var-requires */
+const { pathsToModuleNameMapper } = require('ts-jest');
+
+const { compilerOptions } = require('./tsconfig.json');
+
+module.exports = {
 	verbose: false,
 	displayName: 'SERVER',
 	rootDir: '.',
-	preset: 'ts-jest/presets/default-esm',
+	preset: 'ts-jest',
 	testEnvironment: 'node',
 	collectCoverage: true,
-	collectCoverageFrom: [
-		'<rootDir>/src/**/*.[jt]s'
-	],
+	collectCoverageFrom: ['<rootDir>/src/**/*.ts'],
 	coverageDirectory: './test/coverage',
-	coverageReporters: [
-		'lcov',
-		'text'
-	],
+	coverageReporters: ['lcov', 'text'],
 	coverageThreshold: {
 		global: {
 			branches: 80,
@@ -21,25 +21,11 @@ export default {
 			statements: 80
 		}
 	},
-	moduleFileExtensions: [
-		'js',
-		'json',
-		'ts'
-	],
-	moduleNameMapper: { '^(\\.{1,2}/.*)\\.js$': '$1', },
-	transform: { '.*/.[jt]s$': ['ts-jest', { useESM: true }] },
-	testMatch: [
-		'<rootDir>/src/**/*.spec.[jt]s',
-		'<rootDir>/test/**/*.spec.[jt]s'
-	],
-	testPathIgnorePatterns: [
-		'<rootDir>/src/dist'
-	],
-	setupFilesAfterEnv: [
-		'jest-extended'
-	],
-	forceExit: true,
-	extensionsToTreatAsEsm: [
-		".ts"
-	],
+	moduleFileExtensions: ['js', 'json', 'ts'],
+	moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, { prefix: '<rootDir>/' }),
+	transform: { '.*/.ts$': ['ts-jest', { diagnostics: false }] },
+	testMatch: ['<rootDir>/src/**/*.spec.[jt]s', '<rootDir>/test/**/*.spec.[jt]s'],
+	testPathIgnorePatterns: ['<rootDir>/src/dist'],
+	setupFilesAfterEnv: ['jest-extended'],
+	forceExit: true
 };

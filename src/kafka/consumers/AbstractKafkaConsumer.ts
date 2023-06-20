@@ -1,7 +1,7 @@
 import Kafka from '@acpaas/kafka-nodejs-helper';
 import { EventEmitter } from 'events';
 
-import { KafkaConfig } from '../kafka.types.js';
+import { KafkaConfig } from '../kafka.types';
 
 export abstract class AbstractKafkaConsumer extends EventEmitter {
 	protected kafkaConfig: KafkaConfig;

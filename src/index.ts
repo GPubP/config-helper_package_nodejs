@@ -3,22 +3,22 @@ import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 import { CronJob } from 'cron';
 import { EventEmitter } from 'events';
 import { NextFunction, Request, Response } from 'express';
-import got, { Method, Options, Request as GotRequest } from 'got';
+import got, { Method, Options, GotReturn } from 'got';
 import jwt from 'jsonwebtoken';
 import { clone, pathOr, propOr } from 'ramda';
 
-import { UnauthorizedError } from './errors.js';
+import { UnauthorizedError } from './errors';
 import {
 	AppContext,
 	BSLRequest,
 	GatewayJWTContent,
 	ModuleConfig,
 	ModuleContext,
-	PortalConfig,
-} from './index.types.js';
-import { WcmDigipolisModulesConsumer } from './kafka/consumers/wcm-digipolis.modules.js';
-import { WcmDigipolisTenantsConsumer } from './kafka/consumers/wcm-digipolis.tenants.js';
-import { createKafkaInstance } from './kafka/kafka.js';
+	PortalConfig
+} from './index.types';
+import { WcmDigipolisModulesConsumer } from './kafka/consumers/wcm-digipolis.modules';
+import { WcmDigipolisTenantsConsumer } from './kafka/consumers/wcm-digipolis.tenants';
+import { createKafkaInstance } from './kafka/kafka';
 
 export class TenantsConfig extends EventEmitter {
 	public tenantsKafkaConsumer: WcmDigipolisTenantsConsumer;
@@ -34,7 +34,7 @@ export class TenantsConfig extends EventEmitter {
 
 		this.portalConfig = {
 			cronFrequency: '*/10 * * * * *',
-			...portalConfig,
+			...portalConfig
 		};
 
 		if (portalConfig.kafka) {
@@ -99,7 +99,7 @@ export class TenantsConfig extends EventEmitter {
 
 					req.locals = {
 						...req.locals,
-						requestContext: context as GatewayJWTContent,
+						requestContext: context as GatewayJWTContent
 					};
 
 					next();
@@ -155,14 +155,14 @@ export class TenantsConfig extends EventEmitter {
 		method: Method,
 		path: string,
 		params: Partial<Options> & { isStream?: true },
-	): Promise<GotRequest>;
+	): Promise<GotReturn>;
 	public async requestModule<T = unknown>(
 		tenantApikey: string,
 		moduleRoutePrefix: string,
 		method: Method,
 		path: string,
 		params?: Partial<Options> & { isStream?: boolean },
-	): Promise<T | GotRequest> {
+	): Promise<T | GotReturn> {
 		const appContext = this.getAppContext(tenantApikey);
 
 		if (!appContext) {
@@ -182,21 +182,6 @@ export class TenantsConfig extends EventEmitter {
 			);
 		}
 
-		if (params?.isStream) {
-			const promise = got.stream(path.replace(/^\//, ''), {
-				responseType: 'json',
-				resolveBodyOnly: true,
-				method,
-				prefixUrl: moduleContext.endpoint,
-				headers: {
-					...propOr({}, 'headers')(params),
-					apikey: appContext.apikey,
-					'x-module-id': this.moduleContext.moduleConfiguration.uuid,
-				},
-			});
-			return Promise.resolve(promise as unknown as GotRequest);
-		}
-
 		const promise = got<T>(path.replace(/^\//, ''), {
 			responseType: 'json',
 			resolveBodyOnly: true,
@@ -206,15 +191,19 @@ export class TenantsConfig extends EventEmitter {
 			headers: {
 				...propOr({}, 'headers')(params),
 				apikey: appContext.apikey,
-				'x-module-id': this.moduleContext.moduleConfiguration.uuid,
-			},
+				'x-module-id': this.moduleContext.moduleConfiguration.uuid
+			}
 		});
+
+		if (params?.isStream) {
+			return Promise.resolve(promise);
+		}
 
 		return promise.catch((e) => {
 			throw {
 				status: e?.response?.statusCode,
 				body: e?.response?.body,
-				error: e,
+				error: e
 			};
 		}) as unknown as Promise<T>;
 	}
@@ -274,7 +263,7 @@ export class TenantsConfig extends EventEmitter {
 			(data) =>
 				this.onTick(propOr('config-updated', 'key', data), {
 					moduleId: (data as { value: { uuid: string } })?.value
-						?.uuid,
+						?.uuid
 				}),
 		);
 	}
@@ -286,7 +275,7 @@ export class TenantsConfig extends EventEmitter {
 		this.fetchConfig().then((moduleContext) =>
 			this.emit(key, {
 				...moduleContext,
-				...data,
+				...data
 			}),
 		);
 	}
@@ -295,7 +284,7 @@ export class TenantsConfig extends EventEmitter {
 		return got
 			.get<ModuleContext>(`${this.portalConfig.baseUrl}/modules/config`, {
 				responseType: 'json',
-				headers: { apikey: this.portalConfig.apikey, },
+				headers: { apikey: this.portalConfig.apikey }
 			})
 			.then((result) => {
 				this.moduleContext = result.body;
@@ -305,4 +294,4 @@ export class TenantsConfig extends EventEmitter {
 }
 
 // Export types from root
-export * from './index.types.js';
+export * from './index.types';

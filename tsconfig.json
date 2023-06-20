@@ -1,12 +1,12 @@
 {
 	"compilerOptions": {
 		"baseUrl": ".",
-		"module": "ES2022",
-		"moduleResolution": "node16",
+		"module": "CommonJS",
+		"moduleResolution": "node",
 		"outDir": "dist",
 		"declarationDir": "dist",
 		"declaration": true,
-		"target": "ES2022",
+		"target": "ES6",
 		"allowSyntheticDefaultImports": true,
 		"emitDecoratorMetadata": true,
 		"esModuleInterop": true,
@@ -19,7 +19,7 @@
 		"strictNullChecks": false,
 		"skipLibCheck": true,
 		"lib": [
-			"ES2022"
+			"ES2020"
 		],
 		"types": [
 			"jest",
@@ -38,6 +38,6 @@
 		"**/coverage/**",
 		"**/dist/**",
 		"**/node_modules/**",
-		"src/**/*.spec.ts",
+		"src/**/*.spec.ts"
 	]
 }
