@@ -76,7 +76,7 @@ Defines HTTP route param decorator
 
 #### Defined in
 
-src/index.ts:222
+src/index.ts:211
 
 ___
 
@@ -193,7 +193,7 @@ ___
 
 #### Defined in
 
-src/index.ts:234
+src/index.ts:223
 
 ___
 
@@ -249,7 +249,7 @@ ___
 | `moduleRoutePrefix` | `string` |
 | `method` | `Method` |
 | `path` | `string` |
-| `params?` | `Partial`<`default`\> & { `isStream?`: ``false``  } |
+| `params?` | `Partial`<`Options`\> & { `isStream?`: ``false``  } |
 
 #### Returns
 
@@ -259,7 +259,7 @@ ___
 
 src/index.ts:144
 
-▸ **requestModule**<`T`\>(`tenantApikey`, `moduleRoutePrefix`, `method`, `path`, `params`): `Promise`<`default`\>
+▸ **requestModule**<`T`\>(`tenantApikey`, `moduleRoutePrefix`, `method`, `path`, `params`): `Promise`<`GotReturn`\>
 
 #### Type parameters
 
@@ -275,11 +275,11 @@ src/index.ts:144
 | `moduleRoutePrefix` | `string` |
 | `method` | `Method` |
 | `path` | `string` |
-| `params` | `Partial`<`default`\> & { `isStream?`: ``true``  } |
+| `params` | `Partial`<`Options`\> & { `isStream?`: ``true``  } |
 
 #### Returns
 
-`Promise`<`default`\>
+`Promise`<`GotReturn`\>
 
 #### Defined in
 
