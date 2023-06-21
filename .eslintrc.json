@@ -9,6 +9,7 @@
 	},
 	"rules": {
 		"indent": ["error", "tab"],
+		"quotes": ["error", "single"],
 		"no-tabs": ["error", { "allowIndentationTabs": true }],
 		"max-len": ["error", { "code": 160 }],
 		"no-console": "error",

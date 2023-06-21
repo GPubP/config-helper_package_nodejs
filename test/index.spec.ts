@@ -155,7 +155,7 @@ describe('Request Module', () => {
 			.then(() => expect(catched).toEqual(true));
 	});
 
-	it("should throw error when moduleContext can't be found", () => {
+	it('should throw error when moduleContext can\'t be found', () => {
 		let catched = false;
 
 		return config
@@ -236,7 +236,7 @@ describe('verifyJwt', () => {
 		expect((req as any)?.locals?.requestContext).toBeUndefined();
 	});
 
-	it("should not verify token if not preceded with 'token'", () => {
+	it('should not verify token if not preceded with \'token\'', () => {
 		const publicToken = fs
 			.readFileSync('./test/mocks/jwtRS256.key.pub')
 			.toString();
