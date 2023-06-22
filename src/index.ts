@@ -185,7 +185,8 @@ export class TenantsConfig extends EventEmitter {
 		const promise = got<T>(path.replace(/^\//, ''), {
 			responseType: 'json',
 			resolveBodyOnly: true,
-			...(params && { params }),
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			...params || {} as any,
 			method,
 			prefixUrl: moduleContext.endpoint,
 			headers: {
