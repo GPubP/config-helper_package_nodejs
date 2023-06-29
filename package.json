@@ -16,7 +16,7 @@
     "docs:markdown": "typedoc --plugin typedoc-plugin-markdown --plugin typedoc-github-wiki-theme --plugin typedoc-plugin-missing-exports --excludeExternals true --entryPoints ./src/index.ts --excludePrivate --theme github-wiki --out docs/markdown"
   },
   "publishConfig": {
-    "@wcm:registry": "https://nexusrepo.antwerpen.be/repository/npm-private/"
+    "@wcm:registry": "https://repository.antwerpen.be/repository/npm-hosted/"
   },
   "keywords": [
     "WCM",
