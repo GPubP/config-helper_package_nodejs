@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "prepublishOnly": "npm run build",
-    "build": "npx tsc",
+    "build": "tsc",
     "build:watch": "tsc -w",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "test": "jest --config jest.config.js --runInBand --verbose false",
