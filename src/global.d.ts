@@ -24,16 +24,16 @@ declare module '@acpaas/kafka-nodejs-helper' {
 			origin: string;
 			ssl: {
 				rejectUnauthorized: boolean;
-				ca: string[]
+				ca: string[];
 				key: string;
 				cert: string;
-			},
+			};
 		});
 
 		subscribe(config: {
 			topic: string;
 			groupId: string;
-			callback: (message: KafkaMessage) => void
+			callback: (message: KafkaMessage) => void;
 		}): void;
 	}
 

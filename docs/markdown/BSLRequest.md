@@ -16,8 +16,8 @@
 
 ### locals
 
-• `Optional` **locals**: `Record`<`string`, `any`\> & { `requestContext?`: [`GatewayJWTContent`](../wiki/GatewayJWTContent)  }
+• `Optional` **locals**: `Record`<`string`, `unknown`\> & { `requestContext?`: [`GatewayJWTContent`](../wiki/GatewayJWTContent)  }
 
 #### Defined in
 
-src/index.types.ts:93
+src/index.types.ts:91

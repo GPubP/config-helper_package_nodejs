@@ -22,12 +22,15 @@ export abstract class AbstractKafkaConsumer extends EventEmitter {
 
 	public on(name: string, handler: (...args: unknown[]) => void): this;
 	public on(name: string[], handler: (...args: unknown[]) => void): this;
-	public on(names: string | string[], handler: (...args: unknown[]) => void): this {
+	public on(
+		names: string | string[],
+		handler: (...args: unknown[]) => void,
+	): this {
 		if (!Array.isArray(names)) {
 			return super.on(names as string, handler);
 		}
 
-		names.forEach(name => super.on(name, handler));
+		names.forEach((name) => super.on(name, handler));
 
 		return this;
 	}

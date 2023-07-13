@@ -54,8 +54,7 @@ export interface AppModuleVersion {
 	description: string;
 	version: string;
 	dependencies: Dependency[];
-	// tslint:disable-next-line: no-any
-	config?: any;
+	config?: unknown;
 }
 
 export interface AppContext {
@@ -89,6 +88,5 @@ export interface GatewayJWTContent {
 }
 
 export interface BSLRequest extends Request {
-	// tslint:disable-next-line no-any
-	locals?: Record<string, any> & { requestContext?: GatewayJWTContent};
+	locals?: Record<string, unknown> & { requestContext?: GatewayJWTContent };
 }

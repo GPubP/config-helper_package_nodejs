@@ -18,7 +18,7 @@
 
 #### Defined in
 
-src/index.types.ts:77
+src/index.types.ts:76
 
 ___
 
@@ -28,7 +28,7 @@ ___
 
 #### Defined in
 
-src/index.types.ts:76
+src/index.types.ts:75
 
 ___
 
@@ -38,7 +38,7 @@ ___
 
 #### Defined in
 
-src/index.types.ts:78
+src/index.types.ts:77
 
 ___
 
@@ -48,7 +48,7 @@ ___
 
 #### Defined in
 
-src/index.types.ts:79
+src/index.types.ts:78
 
 ___
 
@@ -58,4 +58,4 @@ ___
 
 #### Defined in
 
-src/index.types.ts:80
+src/index.types.ts:79

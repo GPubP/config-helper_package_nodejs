@@ -48,7 +48,7 @@ EventEmitter.constructor
 
 #### Defined in
 
-src/index.ts:33
+src/index.ts:32
 
 ## Properties
 
@@ -58,9 +58,11 @@ src/index.ts:33
 
 #### Type declaration
 
-▸ (...`dataOrPipes`): `ParameterDecorator`
+▸ (`...dataOrPipes`): `ParameterDecorator`
 
 Defines HTTP route param decorator
+
+**`Public Api`**
 
 ##### Parameters
 
@@ -74,7 +76,7 @@ Defines HTTP route param decorator
 
 #### Defined in
 
-src/index.ts:177
+src/index.ts:211
 
 ___
 
@@ -84,7 +86,7 @@ ___
 
 #### Defined in
 
-src/index.ts:26
+src/index.ts:25
 
 ___
 
@@ -94,7 +96,7 @@ ___
 
 #### Defined in
 
-src/index.ts:25
+src/index.ts:24
 
 ## Methods
 
@@ -107,8 +109,8 @@ src/index.ts:25
 | Name | Type |
 | :------ | :------ |
 | `req` | [`BSLRequest`](../wiki/BSLRequest) |
-| `res` | `Response` |
-| `next` | `Function` |
+| `res` | `Response`<`any`\> |
+| `next` | `NextFunction` |
 
 #### Returns
 
@@ -116,7 +118,7 @@ src/index.ts:25
 
 #### Defined in
 
-src/index.ts:51
+src/index.ts:50
 
 ___
 
@@ -130,7 +132,7 @@ ___
 
 #### Defined in
 
-src/index.ts:102
+src/index.ts:121
 
 ___
 
@@ -150,13 +152,13 @@ ___
 
 #### Defined in
 
-src/index.ts:98
+src/index.ts:115
 
 ___
 
 ### getAppModuleConfig
 
-▸ **getAppModuleConfig**(`tenantUuid`): `Record`<`string`, `string` \| `Object`\>
+▸ **getAppModuleConfig**(`tenantUuid`): `Record`<`string`, `string` \| `Record`<`string`, `string`\>\>
 
 #### Parameters
 
@@ -166,11 +168,11 @@ ___
 
 #### Returns
 
-`Record`<`string`, `string` \| `Object`\>
+`Record`<`string`, `string` \| `Record`<`string`, `string`\>\>
 
 #### Defined in
 
-src/index.ts:110
+src/index.ts:129
 
 ___
 
@@ -191,7 +193,7 @@ ___
 
 #### Defined in
 
-src/index.ts:186
+src/index.ts:223
 
 ___
 
@@ -211,7 +213,7 @@ ___
 
 #### Defined in
 
-src/index.ts:94
+src/index.ts:111
 
 ___
 
@@ -225,7 +227,7 @@ ___
 
 #### Defined in
 
-src/index.ts:106
+src/index.ts:125
 
 ___
 
@@ -247,7 +249,7 @@ ___
 | `moduleRoutePrefix` | `string` |
 | `method` | `Method` |
 | `path` | `string` |
-| `params?` | `GotOptions` & { `isStream?`: ``false``  } |
+| `params?` | `Partial`<`Options`\> & { `isStream?`: ``false``  } |
 
 #### Returns
 
@@ -255,9 +257,9 @@ ___
 
 #### Defined in
 
-src/index.ts:117
+src/index.ts:144
 
-▸ **requestModule**<`T`\>(`tenantApikey`, `moduleRoutePrefix`, `method`, `path`, `params`): `Promise`<`ProxyStream`<`unknown`\>\>
+▸ **requestModule**<`T`\>(`tenantApikey`, `moduleRoutePrefix`, `method`, `path`, `params`): `Promise`<`GotReturn`\>
 
 #### Type parameters
 
@@ -273,21 +275,21 @@ src/index.ts:117
 | `moduleRoutePrefix` | `string` |
 | `method` | `Method` |
 | `path` | `string` |
-| `params` | `GotOptions` & { `isStream?`: ``true``  } |
+| `params` | `Partial`<`Options`\> & { `isStream?`: ``true``  } |
 
 #### Returns
 
-`Promise`<`ProxyStream`<`unknown`\>\>
+`Promise`<`GotReturn`\>
 
 #### Defined in
 
-src/index.ts:124
+src/index.ts:152
 
 ___
 
 ### verifyJwt
 
-▸ **verifyJwt**(`jwtPublicKey?`): (`req`: [`BSLRequest`](../wiki/BSLRequest), `res`: `Response`, `next`: `Function`) => `void`
+▸ **verifyJwt**(`jwtPublicKey?`): (`req`: [`BSLRequest`](../wiki/BSLRequest), `res`: `Response`<`any`\>, `next`: `NextFunction`) => `void`
 
 #### Parameters
 
@@ -306,8 +308,8 @@ ___
 | Name | Type |
 | :------ | :------ |
 | `req` | [`BSLRequest`](../wiki/BSLRequest) |
-| `res` | `Response` |
-| `next` | `Function` |
+| `res` | `Response`<`any`\> |
+| `next` | `NextFunction` |
 
 ##### Returns
 
@@ -315,4 +317,4 @@ ___
 
 #### Defined in
 
-src/index.ts:65
+src/index.ts:70

@@ -252,3 +252,4 @@ const customConfig = tenantConfig.getAppModuleConfig(tenantUuid);
 |----------------|---------------|-----------------------------------------------------------------------------------|
 | ready          | ModuleContext | ModuleConfig has been fetched and set for the first time.                         |
 | config-updated | ModuleContext | ModuleConfig has been update through polling or event (depends on kafka setting). |
+
