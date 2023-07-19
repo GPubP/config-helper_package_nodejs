@@ -24,7 +24,7 @@
     "helper"
   ],
   "devDependencies": {
-    "@nestjs/common": "10.0.0",
+    "@nestjs/common": "10.1.0",
     "@types/cron": "^2.0.1",
     "@types/express": "4.17.7",
     "@types/jest": "29.5.2",
