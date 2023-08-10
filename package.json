@@ -1,6 +1,6 @@
 {
   "name": "@wcm/config-helper",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "config helper",
   "main": "dist/index.js",
   "scripts": {
