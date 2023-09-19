@@ -184,8 +184,9 @@ export class TenantsConfig extends EventEmitter {
 		}
 
 		const promise = axiosInstance.gotRequest(path.replace(/^\//, ''), {
-			responseType: params?.isStream ? 'json' : 'stream',
-			baseURL: moduleContext.endpoint,
+			responseType: params?.isStream ? 'stream' : 'json',
+			prefixUrl: moduleContext.endpoint,
+			resolveBodyOnly: true,
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			...params || {} as any,
 			method,
