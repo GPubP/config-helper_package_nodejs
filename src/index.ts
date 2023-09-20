@@ -3,7 +3,7 @@ import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 import { CronJob } from 'cron';
 import { EventEmitter } from 'events';
 import { NextFunction, Request, Response } from 'express';
-import got, { Method, Options, GotReturn } from 'got';
+import { Method, Options, GotReturn } from 'got';
 import jwt from 'jsonwebtoken';
 import { clone, pathOr, propOr } from 'ramda';
 
@@ -16,6 +16,7 @@ import {
 	ModuleContext,
 	PortalConfig
 } from './index.types';
+import { axiosInstance } from './instances/axios';
 import { WcmDigipolisModulesConsumer } from './kafka/consumers/wcm-digipolis.modules';
 import { WcmDigipolisTenantsConsumer } from './kafka/consumers/wcm-digipolis.tenants';
 import { createKafkaInstance } from './kafka/kafka';
@@ -182,13 +183,13 @@ export class TenantsConfig extends EventEmitter {
 			);
 		}
 
-		const promise = got<T>(path.replace(/^\//, ''), {
-			responseType: 'json',
+		const promise = axiosInstance.gotRequest(path.replace(/^\//, ''), {
+			responseType: params?.isStream ? 'stream' : 'json',
+			prefixUrl: moduleContext.endpoint,
 			resolveBodyOnly: true,
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			...params || {} as any,
 			method,
-			prefixUrl: moduleContext.endpoint,
 			headers: {
 				...propOr({}, 'headers')(params),
 				apikey: appContext.apikey,
@@ -197,7 +198,7 @@ export class TenantsConfig extends EventEmitter {
 		});
 
 		if (params?.isStream) {
-			return Promise.resolve(promise);
+			return promise;
 		}
 
 		return promise.catch((e) => {
@@ -282,8 +283,8 @@ export class TenantsConfig extends EventEmitter {
 	}
 
 	private fetchConfig(): Promise<ModuleContext> {
-		return got
-			.get<ModuleContext>(`${this.portalConfig.baseUrl}/modules/config`, {
+		return axiosInstance
+			.gotGet<ModuleContext>(`${this.portalConfig.baseUrl}/modules/config`, {
 				responseType: 'json',
 				headers: { apikey: this.portalConfig.apikey }
 			})

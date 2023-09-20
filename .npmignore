@@ -3,3 +3,7 @@ node_modules
 .editorconfig
 .eslintignore
 .eslintrc.js
+
+bamboo-specs
+
+audit.json
