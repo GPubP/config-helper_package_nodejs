@@ -198,7 +198,7 @@ export class TenantsConfig extends EventEmitter {
 		});
 
 		if (params?.isStream) {
-			return Promise.resolve(await promise);
+			return promise;
 		}
 
 		return promise.catch((e) => {
