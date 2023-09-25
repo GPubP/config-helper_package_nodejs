@@ -147,7 +147,7 @@ export class CustomErrorFilter implements ExceptionFilter {
 				...errorResponse,
 				status: (exception as CustomError)?.status || 500,
 				title: (exception as CustomError)?.title || 'Onbekende error',
-				type: (exception as CustomError)?.type || 'Onbekende error',
+				type: (exception as CustomError)?.type || 'UKNOWN_ERROR',
 				code: (exception as CustomError)?.status || 'UKNOWN_ERROR',
 				extraInfo: (exception as CustomError)?.extraInfo || exception
 			};
