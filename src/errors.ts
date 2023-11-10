@@ -93,7 +93,7 @@ export class ErrorFilter implements ExceptionFilter {
 	private options: ICustomFilterOptions;
 
 	constructor ({ debug = false } = {}) {
-		this.options.debug = debug;
+		this.options = { debug: debug };
 	}
 
 	catch(exception: HttpException, host: ArgumentsHost) {
@@ -120,7 +120,7 @@ export class CustomErrorFilter implements ExceptionFilter {
 	private options: ICustomFilterOptions;
 
 	constructor ({ debug = false } = {}) {
-		this.options.debug = debug;
+		this.options = { debug: debug };
 	}
 
 	catch(exception: CustomError | CustomValidationError | unknown, host: ArgumentsHost) {
