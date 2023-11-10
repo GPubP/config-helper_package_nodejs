@@ -1,5 +1,9 @@
 import type { CustomValidationError } from './errors';
 
+export type ICustomFilterOptions = {
+	debug: boolean;
+}
+
 export type ICustomValidationError = CustomValidationError;
 
 export interface ICustomErrorDetail {

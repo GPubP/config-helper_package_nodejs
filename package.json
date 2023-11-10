@@ -63,7 +63,7 @@
   },
   "peerDependencies": {
     "@nestjs/common": "^10.1.0",
-    "@wcm/axios-got-wrapper": "^1.2.0",
+    "@wcm/axios-got-wrapper": "^2.0.0",
     "rxjs": "^7.8.1"
   }
 }
