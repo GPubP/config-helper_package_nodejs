@@ -1,6 +1,6 @@
 # Class: AbstractKafkaConsumer
 
-[<internal>](../wiki/%3Cinternal%3E).AbstractKafkaConsumer
+[~internal~](../wiki/~internal~).AbstractKafkaConsumer
 
 ## Hierarchy
 
@@ -8,25 +8,25 @@
 
   ↳ **`AbstractKafkaConsumer`**
 
-  ↳↳ [`WcmDigipolisTenantsConsumer`](../wiki/%3Cinternal%3E.WcmDigipolisTenantsConsumer)
+  ↳↳ [`WcmDigipolisTenantsConsumer`](../wiki/~internal~.WcmDigipolisTenantsConsumer)
 
-  ↳↳ [`WcmDigipolisModulesConsumer`](../wiki/%3Cinternal%3E.WcmDigipolisModulesConsumer)
+  ↳↳ [`WcmDigipolisModulesConsumer`](../wiki/~internal~.WcmDigipolisModulesConsumer)
 
 ## Table of contents
 
 ### Constructors
 
-- [constructor](../wiki/%3Cinternal%3E.AbstractKafkaConsumer#constructor)
+- [constructor](../wiki/~internal~.AbstractKafkaConsumer#constructor)
 
 ### Properties
 
-- [kafka](../wiki/%3Cinternal%3E.AbstractKafkaConsumer#kafka)
-- [kafkaConfig](../wiki/%3Cinternal%3E.AbstractKafkaConsumer#kafkaconfig)
+- [kafka](../wiki/~internal~.AbstractKafkaConsumer#kafka)
+- [kafkaConfig](../wiki/~internal~.AbstractKafkaConsumer#kafkaconfig)
 
 ### Methods
 
-- [on](../wiki/%3Cinternal%3E.AbstractKafkaConsumer#on)
-- [subscribe](../wiki/%3Cinternal%3E.AbstractKafkaConsumer#subscribe)
+- [on](../wiki/~internal~.AbstractKafkaConsumer#on)
+- [subscribe](../wiki/~internal~.AbstractKafkaConsumer#subscribe)
 
 ## Constructors
 
@@ -38,8 +38,8 @@
 
 | Name | Type |
 | :------ | :------ |
-| `kafkaInstance` | [`Kafka`](../wiki/%3Cinternal%3E.Kafka) |
-| `kafkaConfig` | [`KafkaConfig`](../wiki/%3Cinternal%3E.KafkaConfig) |
+| `kafkaInstance` | [`Kafka`](../wiki/~internal~.Kafka) |
+| `kafkaConfig` | [`KafkaConfig`](../wiki/~internal~.KafkaConfig) |
 
 #### Overrides
 
@@ -53,7 +53,7 @@ src/kafka/consumers/AbstractKafkaConsumer.ts:10
 
 ### kafka
 
-• `Protected` **kafka**: [`Kafka`](../wiki/%3Cinternal%3E.Kafka)
+• `Protected` **kafka**: [`Kafka`](../wiki/~internal~.Kafka)
 
 #### Defined in
 
@@ -63,7 +63,7 @@ ___
 
 ### kafkaConfig
 
-• `Protected` **kafkaConfig**: [`KafkaConfig`](../wiki/%3Cinternal%3E.KafkaConfig)
+• `Protected` **kafkaConfig**: [`KafkaConfig`](../wiki/~internal~.KafkaConfig)
 
 #### Defined in
 
@@ -73,7 +73,7 @@ src/kafka/consumers/AbstractKafkaConsumer.ts:7
 
 ### on
 
-▸ **on**(`name`, `handler`): [`AbstractKafkaConsumer`](../wiki/%3Cinternal%3E.AbstractKafkaConsumer)
+▸ **on**(`name`, `handler`): [`AbstractKafkaConsumer`](../wiki/~internal~.AbstractKafkaConsumer)
 
 #### Parameters
 
@@ -84,7 +84,7 @@ src/kafka/consumers/AbstractKafkaConsumer.ts:7
 
 #### Returns
 
-[`AbstractKafkaConsumer`](../wiki/%3Cinternal%3E.AbstractKafkaConsumer)
+[`AbstractKafkaConsumer`](../wiki/~internal~.AbstractKafkaConsumer)
 
 #### Overrides
 
@@ -94,7 +94,7 @@ EventEmitter.on
 
 src/kafka/consumers/AbstractKafkaConsumer.ts:23
 
-▸ **on**(`name`, `handler`): [`AbstractKafkaConsumer`](../wiki/%3Cinternal%3E.AbstractKafkaConsumer)
+▸ **on**(`name`, `handler`): [`AbstractKafkaConsumer`](../wiki/~internal~.AbstractKafkaConsumer)
 
 #### Parameters
 
@@ -105,7 +105,7 @@ src/kafka/consumers/AbstractKafkaConsumer.ts:23
 
 #### Returns
 
-[`AbstractKafkaConsumer`](../wiki/%3Cinternal%3E.AbstractKafkaConsumer)
+[`AbstractKafkaConsumer`](../wiki/~internal~.AbstractKafkaConsumer)
 
 #### Overrides
 
@@ -125,7 +125,7 @@ ___
 
 | Name | Type |
 | :------ | :------ |
-| `config` | [`KafkaConfig`](../wiki/%3Cinternal%3E.KafkaConfig) |
+| `config` | [`KafkaConfig`](../wiki/~internal~.KafkaConfig) |
 
 #### Returns
 

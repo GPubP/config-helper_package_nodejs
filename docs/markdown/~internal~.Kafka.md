@@ -1,16 +1,16 @@
 # Class: Kafka
 
-[<internal>](../wiki/%3Cinternal%3E).Kafka
+[~internal~](../wiki/~internal~).Kafka
 
 ## Table of contents
 
 ### Constructors
 
-- [constructor](../wiki/%3Cinternal%3E.Kafka#constructor)
+- [constructor](../wiki/~internal~.Kafka#constructor)
 
 ### Methods
 
-- [subscribe](../wiki/%3Cinternal%3E.Kafka#subscribe)
+- [subscribe](../wiki/~internal~.Kafka#subscribe)
 
 ## Constructors
 
@@ -46,7 +46,7 @@ src/global.d.ts:22
 | Name | Type |
 | :------ | :------ |
 | `config` | `Object` |
-| `config.callback` | (`message`: [`KafkaMessage`](../wiki/%3Cinternal%3E.KafkaMessage)<`unknown`\>) => `void` |
+| `config.callback` | (`message`: [`KafkaMessage`](../wiki/~internal~.KafkaMessage)<`unknown`\>) => `void` |
 | `config.groupId` | `string` |
 | `config.topic` | `string` |
 

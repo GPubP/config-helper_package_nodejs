@@ -8,12 +8,13 @@
     "build": "tsc",
     "build:watch": "tsc -w",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "test": "jest --config jest.config.js --runInBand --verbose false",
     "test:watch": "npm run test -- --watchAll",
     "install:peers": "install-peers -f",
     "docs": "npm run docs:html && npm run docs:markdown",
-    "docs:html": "typedoc --plugin typedoc-plugin-missing-exports --excludeExternals true --entryPoints ./src/index.ts --excludePrivate --out docs",
-    "docs:markdown": "typedoc --plugin typedoc-plugin-markdown --plugin typedoc-github-wiki-theme --plugin typedoc-plugin-missing-exports --excludeExternals true --entryPoints ./src/index.ts --excludePrivate --theme github-wiki --out docs/markdown"
+    "docs:html": "typedoc --plugin typedoc-plugin-missing-exports --internalModule ~internal~ --excludeExternals true --entryPoints ./src/index.ts --excludePrivate --out docs",
+    "docs:markdown": "typedoc --plugin typedoc-plugin-markdown --plugin typedoc-github-wiki-theme --plugin typedoc-plugin-missing-exports --internalModule ~internal~ --excludeExternals true --entryPoints ./src/index.ts --excludePrivate --theme github-wiki --out docs/markdown"
   },
   "keywords": [
     "WCM",

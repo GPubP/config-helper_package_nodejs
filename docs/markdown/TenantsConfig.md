@@ -48,7 +48,7 @@ EventEmitter.constructor
 
 #### Defined in
 
-src/index.ts:32
+src/index.ts:33
 
 ## Properties
 
@@ -76,27 +76,27 @@ Defines HTTP route param decorator
 
 #### Defined in
 
-src/index.ts:211
+src/index.ts:213
 
 ___
 
 ### modulesKafkaConsumer
 
-• **modulesKafkaConsumer**: [`WcmDigipolisModulesConsumer`](../wiki/%3Cinternal%3E.WcmDigipolisModulesConsumer)
+• **modulesKafkaConsumer**: [`WcmDigipolisModulesConsumer`](../wiki/~internal~.WcmDigipolisModulesConsumer)
 
 #### Defined in
 
-src/index.ts:25
+src/index.ts:26
 
 ___
 
 ### tenantsKafkaConsumer
 
-• **tenantsKafkaConsumer**: [`WcmDigipolisTenantsConsumer`](../wiki/%3Cinternal%3E.WcmDigipolisTenantsConsumer)
+• **tenantsKafkaConsumer**: [`WcmDigipolisTenantsConsumer`](../wiki/~internal~.WcmDigipolisTenantsConsumer)
 
 #### Defined in
 
-src/index.ts:24
+src/index.ts:25
 
 ## Methods
 
@@ -118,7 +118,7 @@ src/index.ts:24
 
 #### Defined in
 
-src/index.ts:50
+src/index.ts:51
 
 ___
 
@@ -132,7 +132,7 @@ ___
 
 #### Defined in
 
-src/index.ts:121
+src/index.ts:122
 
 ___
 
@@ -152,7 +152,7 @@ ___
 
 #### Defined in
 
-src/index.ts:115
+src/index.ts:116
 
 ___
 
@@ -172,7 +172,7 @@ ___
 
 #### Defined in
 
-src/index.ts:129
+src/index.ts:130
 
 ___
 
@@ -193,7 +193,7 @@ ___
 
 #### Defined in
 
-src/index.ts:223
+src/index.ts:225
 
 ___
 
@@ -213,7 +213,7 @@ ___
 
 #### Defined in
 
-src/index.ts:111
+src/index.ts:112
 
 ___
 
@@ -227,7 +227,7 @@ ___
 
 #### Defined in
 
-src/index.ts:125
+src/index.ts:126
 
 ___
 
@@ -257,7 +257,7 @@ ___
 
 #### Defined in
 
-src/index.ts:144
+src/index.ts:145
 
 ▸ **requestModule**<`T`\>(`tenantApikey`, `moduleRoutePrefix`, `method`, `path`, `params`): `Promise`<`GotReturn`\>
 
@@ -283,7 +283,7 @@ src/index.ts:144
 
 #### Defined in
 
-src/index.ts:152
+src/index.ts:153
 
 ___
 
@@ -317,4 +317,4 @@ ___
 
 #### Defined in
 
-src/index.ts:70
+src/index.ts:71

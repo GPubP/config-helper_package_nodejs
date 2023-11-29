@@ -1,13 +1,13 @@
 # Interface: Dependency
 
-[<internal>](../wiki/%3Cinternal%3E).Dependency
+[~internal~](../wiki/~internal~).Dependency
 
 ## Table of contents
 
 ### Properties
 
-- [module](../wiki/%3Cinternal%3E.Dependency#module)
-- [version](../wiki/%3Cinternal%3E.Dependency#version)
+- [module](../wiki/~internal~.Dependency#module)
+- [version](../wiki/~internal~.Dependency#version)
 
 ## Properties
 
