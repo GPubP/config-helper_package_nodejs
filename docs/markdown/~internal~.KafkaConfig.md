@@ -1,18 +1,18 @@
 # Interface: KafkaConfig
 
-[<internal>](../wiki/%3Cinternal%3E).KafkaConfig
+[~internal~](../wiki/~internal~).KafkaConfig
 
 ## Table of contents
 
 ### Properties
 
-- [ca](../wiki/%3Cinternal%3E.KafkaConfig#ca)
-- [cert](../wiki/%3Cinternal%3E.KafkaConfig#cert)
-- [host](../wiki/%3Cinternal%3E.KafkaConfig#host)
-- [key](../wiki/%3Cinternal%3E.KafkaConfig#key)
-- [origin](../wiki/%3Cinternal%3E.KafkaConfig#origin)
-- [subscribers](../wiki/%3Cinternal%3E.KafkaConfig#subscribers)
-- [topics](../wiki/%3Cinternal%3E.KafkaConfig#topics)
+- [ca](../wiki/~internal~.KafkaConfig#ca)
+- [cert](../wiki/~internal~.KafkaConfig#cert)
+- [host](../wiki/~internal~.KafkaConfig#host)
+- [key](../wiki/~internal~.KafkaConfig#key)
+- [origin](../wiki/~internal~.KafkaConfig#origin)
+- [subscribers](../wiki/~internal~.KafkaConfig#subscribers)
+- [topics](../wiki/~internal~.KafkaConfig#topics)
 
 ## Properties
 

@@ -54,7 +54,7 @@ ___
 
 ### kafka
 
-• `Optional` **kafka**: [`KafkaConfig`](../wiki/%3Cinternal%3E.KafkaConfig)
+• `Optional` **kafka**: [`KafkaConfig`](../wiki/~internal~.KafkaConfig)
 
 #### Defined in
 

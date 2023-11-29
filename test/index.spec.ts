@@ -8,6 +8,7 @@ import { mockReq, mockRes } from 'sinon-express-mock';
 import { wait } from './helpers/wait';
 import { default as mockConfig } from './mocks/module-config.json';
 import { BSLRequest, TenantsConfig } from '../src/index';
+import { axiosInstance } from '../src/instances/axios';
 
 describe('ApiKeyGuard', () => {
 	let config: TenantsConfig;
@@ -104,7 +105,7 @@ describe('Request Module', () => {
 	});
 
 	it('should make requests as stream', async () => {
-		const spy = jest.spyOn(Promise, 'resolve');
+		const spy = jest.spyOn(axiosInstance, 'gotRequest');
 
 		nock('http://test.be')
 			.get('/test')
