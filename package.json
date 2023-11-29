@@ -1,6 +1,6 @@
 {
   "name": "@wcm/config-helper",
-  "version": "4.3.0",
+  "version": "4.4.0-1",
   "description": "config helper",
   "main": "dist/index.js",
   "scripts": {
@@ -63,7 +63,7 @@
   },
   "peerDependencies": {
     "@nestjs/common": "^10.1.0",
-    "@wcm/axios-got-wrapper": "^1.2.0",
+    "@wcm/axios-got-wrapper": "^2.0.0",
     "rxjs": "^7.8.1"
   }
 }

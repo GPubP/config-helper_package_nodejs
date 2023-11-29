@@ -21,12 +21,13 @@ import {
 	UnprocessableEntityException,
 	UnsupportedMediaTypeException
 } from '@nestjs/common';
+import { AxiosGotError } from '@wcm/axios-got-wrapper';
 import { AxiosError } from 'axios';
 import { HTTPError } from 'got';
 import { omit } from 'ramda';
 import { v4 as uuid } from 'uuid';
 
-import { ICustomError } from './errors.types';
+import { ICustomError, ICustomFilterOptions } from './errors.types';
 
 // tslint:disable-next-line variable-name
 export const UnauthorizedError = Object.freeze({
@@ -89,6 +90,12 @@ export class CustomValidationError extends CustomError {
 	GatewayTimeoutException
 )
 export class ErrorFilter implements ExceptionFilter {
+	private options: ICustomFilterOptions;
+
+	constructor ({ debug = false } = {}) {
+		this.options = { debug: debug };
+	}
+
 	catch(exception: HttpException, host: ArgumentsHost) {
 		const ctx = host.switchToHttp();
 		const response = ctx.getResponse();
@@ -100,7 +107,7 @@ export class ErrorFilter implements ExceptionFilter {
 			type: 'HTTPError',
 			identifier: uuid(),
 			code: exception.constructor.name,
-			extraInfo: omit(['statusCode', 'error'])(origResponse)
+			extraInfo: this.options.debug ? omit(['statusCode', 'error'])(origResponse) : null
 		};
 
 		return response.status(exception.getStatus()).json(errorResponse);
@@ -110,6 +117,12 @@ export class ErrorFilter implements ExceptionFilter {
 // Catch nog NestJS errors
 @Catch()
 export class CustomErrorFilter implements ExceptionFilter {
+	private options: ICustomFilterOptions;
+
+	constructor ({ debug = false } = {}) {
+		this.options = { debug: debug };
+	}
+
 	catch(exception: CustomError | CustomValidationError | unknown, host: ArgumentsHost) {
 		const ctx = host.switchToHttp();
 		const response = ctx.getResponse();
@@ -125,20 +138,25 @@ export class CustomErrorFilter implements ExceptionFilter {
 				type: exception?.name,
 				code: exception?.name,
 				extraInfo: {
-					stack: exception?.stack,
+					...(this.options.debug ? { stack: exception?.stack } : {}),
 					body: exception?.response?.body
 				}
 			};
-		} else if (exception instanceof AxiosError || exception?.constructor?.name === 'AxiosError') {
+		} else if (
+			exception instanceof AxiosError
+			|| exception?.constructor?.name === 'AxiosError'
+			|| exception instanceof AxiosGotError
+			|| exception?.constructor?.name === 'AxiosGotError'
+		) {
 			errorResponse = {
 				...errorResponse,
-				status: (exception as AxiosError)?.status || (exception as AxiosError)?.response?.status || 500,
-				title: (exception as AxiosError)?.message,
-				type: (exception as AxiosError)?.name,
-				code: (exception as AxiosError)?.code,
+				status: (exception as AxiosGotError)?.status || (exception as AxiosGotError)?.response?.status || 500,
+				title: (exception as AxiosGotError)?.message,
+				type: (exception as AxiosGotError)?.name,
+				code: (exception as AxiosGotError)?.code,
 				extraInfo: {
-					stack: (exception as AxiosError)?.stack,
-					body: (exception as AxiosError)?.response?.data
+					...(this.options.debug ? { stack: (exception as AxiosGotError)?.stack } : {}),
+					body: (exception as AxiosGotError)?.response?.data
 				}
 			};
 			return response.status(errorResponse.status).json(errorResponse);
@@ -149,7 +167,13 @@ export class CustomErrorFilter implements ExceptionFilter {
 				title: (exception as CustomError)?.title || 'Onbekende error',
 				type: (exception as CustomError)?.type || 'UKNOWN_ERROR',
 				code: (exception as CustomError)?.status || 'UKNOWN_ERROR',
-				extraInfo: (exception as CustomError)?.extraInfo || exception
+				extraInfo: (exception as CustomError)?.extraInfo
+					|| (this.options.debug
+						? exception
+						: exception?.toString
+							? exception?.toString()
+							: null
+					)
 			};
 		}
 
