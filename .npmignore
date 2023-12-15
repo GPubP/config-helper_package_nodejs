@@ -4,8 +4,5 @@ test/
 docs/
 bamboo-specs/
 .*
-*.json
-*.js
-*.md
-!package.json
-!package-lock.json
+tsconfig*.json
+*.config.js
