@@ -177,7 +177,7 @@ export class CustomErrorFilter implements ExceptionFilter {
 			};
 		}
 
-		response.status(errorResponse.status).json(errorResponse);
+		response.status(errorResponse.status || 500).json(errorResponse);
 	}
 }
 
