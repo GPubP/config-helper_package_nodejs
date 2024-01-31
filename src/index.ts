@@ -14,6 +14,7 @@ import {
 	GatewayJWTContent,
 	ModuleConfig,
 	ModuleContext,
+	ModuleDependency,
 	PortalConfig
 } from './index.types';
 import { axiosInstance } from './instances/axios';
@@ -286,7 +287,8 @@ export class TenantsConfig extends EventEmitter {
 		return axiosInstance
 			.gotGet<ModuleContext>(`${this.portalConfig.baseUrl}/modules/config`, {
 				responseType: 'json',
-				headers: { apikey: this.portalConfig.apikey }
+				headers: { apikey: this.portalConfig.apikey },
+				searchParams: { populate: true }
 			})
 			.then((result) => {
 				this.moduleContext = result.body;
