@@ -297,3 +297,5 @@ export class TenantsConfig extends EventEmitter {
 
 // Export types from root
 export * from './index.types';
+export * from './errors';
+export * from './errors.types';
