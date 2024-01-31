@@ -137,6 +137,6 @@ export function obfuscateError(exception: CustomError | CustomValidationError | 
 		delete error.extraInfo;
 	}
 
-	{return { status, error };}
+	return { status, error };
 }
 
