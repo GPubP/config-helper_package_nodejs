@@ -128,6 +128,10 @@ export class TenantsConfig extends EventEmitter {
 		return clone(this.moduleContext?.moduleConfiguration);
 	}
 
+	public getModuleDependencies(): ModuleDependency[] {
+		return this.getModuleContext()?.data.versions?.[0]?.dependencies || [];
+	}
+
 	public getAppModuleConfig(
 		tenantUuid: string,
 	): Record<string, string | Record<string, string>> {
