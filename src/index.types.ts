@@ -5,9 +5,7 @@ import { KafkaConfig } from './kafka/kafka.types';
 export interface ModuleDependency {
 	version: string;
 	module: string;
-	data?: Omit<ModuleConfig, 'versions'> & {
-		version: ModuleVersion;
-	};
+	data?: ModuleConfig;
 }
 
 export interface ModuleVersion {
