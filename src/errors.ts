@@ -1,30 +1,13 @@
 import {
 	ArgumentsHost,
-	BadGatewayException,
-	BadRequestException,
 	Catch,
-	ConflictException,
 	ExceptionFilter,
-	ForbiddenException,
-	GatewayTimeoutException,
-	GoneException,
-	HttpException,
-	InternalServerErrorException,
-	MethodNotAllowedException,
-	NotAcceptableException,
-	NotFoundException,
-	NotImplementedException,
-	PayloadTooLargeException,
-	RequestTimeoutException,
-	ServiceUnavailableException,
-	UnauthorizedException,
-	UnprocessableEntityException,
-	UnsupportedMediaTypeException
+	HttpException
 } from '@nestjs/common';
 import { AxiosGotError } from '@wcm/axios-got-wrapper';
 import { AxiosError } from 'axios';
 import { HTTPError } from 'got';
-import { omit } from 'ramda';
+import { isEmpty, omit } from 'ramda';
 import { v4 as uuid } from 'uuid';
 
 import { ICustomError, ICustomFilterOptions } from './errors.types';
@@ -68,27 +51,8 @@ export class CustomValidationError extends CustomError {
 }
 
 
-// Map NestJS errors to Digipolis response
-@Catch(
-	HttpException,
-	BadRequestException,
-	NotFoundException,
-	UnauthorizedException,
-	ForbiddenException,
-	NotAcceptableException,
-	RequestTimeoutException,
-	ConflictException,
-	GoneException,
-	PayloadTooLargeException,
-	UnsupportedMediaTypeException,
-	UnprocessableEntityException,
-	InternalServerErrorException,
-	NotImplementedException,
-	MethodNotAllowedException,
-	BadGatewayException,
-	ServiceUnavailableException,
-	GatewayTimeoutException
-)
+// Map all errors to Digipolis response
+@Catch()
 export class ErrorFilter implements ExceptionFilter {
 	private options: ICustomFilterOptions;
 
@@ -100,85 +64,79 @@ export class ErrorFilter implements ExceptionFilter {
 		const ctx = host.switchToHttp();
 		const response = ctx.getResponse();
 
-		const origResponse = exception.getResponse();
-		const errorResponse = {
-			status: exception.getStatus(),
+		const { status, error } = obfuscateError(exception, this.options.debug);
+
+		return response.status(status).json(error);
+	}
+}
+
+export function obfuscateError(exception: CustomError | CustomValidationError | unknown, debug: boolean): {status: number, error: CustomError} {
+	let status: number;
+	let error: CustomError;
+
+	if (exception instanceof HttpException) {
+		status = exception.getStatus();
+		error = {
+			identifier: uuid(),
+			status,
 			title: exception.message,
 			type: 'HTTPError',
-			identifier: uuid(),
 			code: exception.constructor.name,
-			extraInfo: this.options.debug ? omit(['statusCode', 'error'])(origResponse) : null
+			extraInfo: debug ? omit(['statusCode', 'error'])(exception.getResponse()) : null
 		};
-
-		return response.status(exception.getStatus()).json(errorResponse);
+	} else if (exception instanceof HTTPError) {
+		status = exception?.response?.statusCode || 500;
+		error = {
+			identifier: uuid(),
+			status,
+			title: exception?.message,
+			type: exception?.name,
+			code: exception?.name,
+			extraInfo: {
+				...(debug ? { stack: exception?.stack } : {}),
+				body: exception?.response?.body
+			}
+		};
+	} else if (
+		exception instanceof AxiosError
+		|| exception?.constructor?.name === 'AxiosError'
+		|| exception instanceof AxiosGotError
+		|| exception?.constructor?.name === 'AxiosGotError'
+	) {
+		status = (exception as AxiosGotError)?.status || (exception as AxiosGotError)?.response?.status || 500;
+		error = {
+			identifier: uuid(),
+			status,
+			title: (exception as AxiosGotError)?.message,
+			type: (exception as AxiosGotError)?.name,
+			code: (exception as AxiosGotError)?.code,
+			extraInfo: {
+				...(debug ? { stack: (exception as AxiosGotError)?.stack } : {}),
+				body: (exception as AxiosGotError)?.response?.data
+			}
+		};
+	} else {
+		status = (exception as CustomError)?.status || 500;
+		error = {
+			identifier: uuid(),
+			status,
+			title: (exception as CustomError)?.title || 'Onbekende error',
+			type: (exception as CustomError)?.type || 'UNKNOWN_ERROR',
+			code: String((exception as CustomError)?.status) || 'UNKNOWN_ERROR',
+			extraInfo: (exception as CustomError)?.extraInfo
+				|| (debug
+					? exception
+					: exception?.toString
+						? exception?.toString()
+						: null
+				)
+		};
 	}
+
+	if (!error.extraInfo || isEmpty(error.extraInfo)) {
+		delete error.extraInfo;
+	}
+
+	return { status, error };
 }
-
-// Catch nog NestJS errors
-@Catch()
-export class CustomErrorFilter implements ExceptionFilter {
-	private options: ICustomFilterOptions;
-
-	constructor ({ debug = false } = {}) {
-		this.options = { debug: debug };
-	}
-
-	catch(exception: CustomError | CustomValidationError | unknown, host: ArgumentsHost) {
-		const ctx = host.switchToHttp();
-		const response = ctx.getResponse();
-
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		let errorResponse: Record<string, any> = { identifier: uuid() };
-
-		if (exception instanceof HTTPError) {
-			errorResponse = {
-				...errorResponse,
-				status: exception?.response?.statusCode || 500,
-				title: exception?.message,
-				type: exception?.name,
-				code: exception?.name,
-				extraInfo: {
-					...(this.options.debug ? { stack: exception?.stack } : {}),
-					body: exception?.response?.body
-				}
-			};
-		} else if (
-			exception instanceof AxiosError
-			|| exception?.constructor?.name === 'AxiosError'
-			|| exception instanceof AxiosGotError
-			|| exception?.constructor?.name === 'AxiosGotError'
-		) {
-			errorResponse = {
-				...errorResponse,
-				status: (exception as AxiosGotError)?.status || (exception as AxiosGotError)?.response?.status || 500,
-				title: (exception as AxiosGotError)?.message,
-				type: (exception as AxiosGotError)?.name,
-				code: (exception as AxiosGotError)?.code,
-				extraInfo: {
-					...(this.options.debug ? { stack: (exception as AxiosGotError)?.stack } : {}),
-					body: (exception as AxiosGotError)?.response?.data
-				}
-			};
-			return response.status(errorResponse.status).json(errorResponse);
-		} else {
-			errorResponse = {
-				...errorResponse,
-				status: (exception as CustomError)?.status || 500,
-				title: (exception as CustomError)?.title || 'Onbekende error',
-				type: (exception as CustomError)?.type || 'UKNOWN_ERROR',
-				code: (exception as CustomError)?.status || 'UKNOWN_ERROR',
-				extraInfo: (exception as CustomError)?.extraInfo
-					|| (this.options.debug
-						? exception
-						: exception?.toString
-							? exception?.toString()
-							: null
-					)
-			};
-		}
-
-		response.status(errorResponse.status).json(errorResponse);
-	}
-}
-
 
