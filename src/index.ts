@@ -149,23 +149,25 @@ export class TenantsConfig extends EventEmitter {
 		return (module?.config as Record<string, string>) || {};
 	}
 
-	public getModuleStatus: CheckFunction = async (name: string, checkEndpoint = '/status/health') => {
-		const dependencies = this.getModuleDependencies();
-
-		const dependency = dependencies.find((dep) => (dep.module as ModuleConfig)?.data.name === name);
-
-		if (!dependency || !(dependency.module as ModuleConfig)?.data?.versions?.[0]) {
-			return {
-				responseType: ErrorTypes.OUTAGE,
-				reason: `Could not find "${name}" in module dependencies.`
+	public getModuleStatus(name: string, checkEndpoint = '/status/health'): CheckFunction {
+		return async () => {
+			const dependencies = this.getModuleDependencies();
+	
+			const dependency = dependencies.find((dep) => (dep.module as ModuleConfig)?.data.name === name);
+	
+			if (!dependency || !(dependency.module as ModuleConfig)?.data?.versions?.[0]) {
+				return {
+					responseType: ErrorTypes.OUTAGE,
+					reason: `Could not find "${name}" in module dependencies.`
+				}
 			}
-		}
-
-		const dependencyBaseURL = (dependency.module as ModuleConfig).data.versions[0].endpoint;
-
-		const response = await axios.get(`${dependencyBaseURL}${checkEndpoint}`);
-
-		return response.data;
+	
+			const dependencyBaseURL = (dependency.module as ModuleConfig).data.versions[0].endpoint;
+	
+			const response = await axios.get(`${dependencyBaseURL}${checkEndpoint}`);
+	
+			return response.data;
+		};
 	}
 
 	public async requestModule<T = unknown>(
