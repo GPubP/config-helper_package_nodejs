@@ -20,4 +20,4 @@
 
 #### Defined in
 
-src/index.types.ts:91
+src/index.types.ts:93

@@ -19,7 +19,7 @@
 
 #### Defined in
 
-src/index.types.ts:61
+src/index.types.ts:63
 
 ___
 
@@ -29,7 +29,7 @@ ___
 
 #### Defined in
 
-src/index.types.ts:65
+src/index.types.ts:67
 
 ___
 
@@ -39,7 +39,7 @@ ___
 
 #### Defined in
 
-src/index.types.ts:64
+src/index.types.ts:66
 
 ___
 
@@ -49,7 +49,7 @@ ___
 
 #### Defined in
 
-src/index.types.ts:66
+src/index.types.ts:68
 
 ___
 
@@ -59,7 +59,7 @@ ___
 
 #### Defined in
 
-src/index.types.ts:63
+src/index.types.ts:65
 
 ___
 
@@ -69,4 +69,4 @@ ___
 
 #### Defined in
 
-src/index.types.ts:62
+src/index.types.ts:64

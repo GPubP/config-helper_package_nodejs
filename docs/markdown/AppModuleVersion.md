@@ -21,17 +21,17 @@
 
 #### Defined in
 
-src/index.types.ts:57
+src/index.types.ts:59
 
 ___
 
 ### dependencies
 
-• **dependencies**: [`Dependency`](../wiki/~internal~.Dependency)[]
+• **dependencies**: [`ModuleDependency`](../wiki/ModuleDependency)[]
 
 #### Defined in
 
-src/index.types.ts:56
+src/index.types.ts:58
 
 ___
 
@@ -41,7 +41,7 @@ ___
 
 #### Defined in
 
-src/index.types.ts:54
+src/index.types.ts:56
 
 ___
 
@@ -51,7 +51,7 @@ ___
 
 #### Defined in
 
-src/index.types.ts:53
+src/index.types.ts:55
 
 ___
 
@@ -61,7 +61,7 @@ ___
 
 #### Defined in
 
-src/index.types.ts:50
+src/index.types.ts:52
 
 ___
 
@@ -71,7 +71,7 @@ ___
 
 #### Defined in
 
-src/index.types.ts:51
+src/index.types.ts:53
 
 ___
 
@@ -81,7 +81,7 @@ ___
 
 #### Defined in
 
-src/index.types.ts:52
+src/index.types.ts:54
 
 ___
 
@@ -91,4 +91,4 @@ ___
 
 #### Defined in
 
-src/index.types.ts:55
+src/index.types.ts:57
