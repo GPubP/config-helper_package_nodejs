@@ -33,14 +33,14 @@ Build:
           echo "Starting publish script..."
           echo "NPM version"
           npm --version
-          npm i
+          npm ci
           TOKEN=$(curl -s \
           -H "Accept: application/json" \
           -H "Content-Type:application/json" \
           -X PUT --data '{"name": "${bamboo.NPM_USER}", "password": "${bamboo.SECRET}"}' \
           https://repository.antwerpen.be/repository/npm-all/-/user/org.couchdb.user:bamboo-npm-publisher | grep -o '"token":"[^"]*' | grep -o '[^"]*$')
           npm set //repository.antwerpen.be/repository/:_authToken=${TOKEN}
-          npm publish --registry ${bamboo.REGISTRY}
+          npm run build && npm publish --registry ${bamboo.REGISTRY}
           echo "Done publishing package"
   docker:
     image: node:18
