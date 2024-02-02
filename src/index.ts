@@ -164,9 +164,16 @@ export class TenantsConfig extends EventEmitter {
 	
 			const dependencyBaseURL = (dependency.module as ModuleConfig).data.versions[0].endpoint;
 	
-			const response = await axios.get(`${dependencyBaseURL}${checkEndpoint}`);
-	
-			return response.data;
+			try {
+				const response = await axios.get(`${dependencyBaseURL}${checkEndpoint}`);
+		
+				return response.data;
+			} catch (err) {
+				return {
+					responseType: ErrorTypes.OUTAGE,
+					reason: err?.message || err.toString()
+				};
+			}
 		};
 	}
 
