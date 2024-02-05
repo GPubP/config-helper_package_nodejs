@@ -39,7 +39,7 @@ export class TenantsConfig extends EventEmitter {
 		const cronStart = this.pickRandomCronStart();
 
 		this.portalConfig = {
-			cronFrequency: `${cronStart}-59/10 * * * * *`,
+			cronFrequency: `${cronStart}-59/5 * * * *`,
 			...portalConfig
 		};
 
