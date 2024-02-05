@@ -36,8 +36,10 @@ export class TenantsConfig extends EventEmitter {
 	constructor(portalConfig: PortalConfig) {
 		super();
 
+		const cronStart = this.pickRandomCronStart();
+
 		this.portalConfig = {
-			cronFrequency: '*/10 * * * * *',
+			cronFrequency: `${cronStart}-59/10 * * * * *`,
 			...portalConfig
 		};
 
@@ -328,6 +330,13 @@ export class TenantsConfig extends EventEmitter {
 				this.moduleContext = result.body;
 				return result.body;
 			});
+	}
+
+	private pickRandomCronStart(): number {
+		const min = 1;
+		const max = 59;
+
+		return Math.floor(Math.random() * (max - min + 1)) + min;
 	}
 }
 
