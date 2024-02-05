@@ -149,7 +149,7 @@ export class TenantsConfig extends EventEmitter {
 		return (module?.config as Record<string, string>) || {};
 	}
 
-	public getModuleStatus(name: string, checkEndpoint = '/status/health'): CheckFunction {
+	public getModuleStatus(name: string, checkEndpoint = '/status/ping'): CheckFunction {
 		return async () => {
 			const dependencies = this.getModuleDependencies();
 	
