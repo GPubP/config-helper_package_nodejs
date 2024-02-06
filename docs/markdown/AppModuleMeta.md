@@ -16,7 +16,7 @@
 
 #### Defined in
 
-src/index.types.ts:38
+src/index.types.ts:40
 
 ___
 
@@ -26,7 +26,7 @@ ___
 
 #### Defined in
 
-src/index.types.ts:39
+src/index.types.ts:41
 
 ___
 
@@ -36,4 +36,4 @@ ___
 
 #### Defined in
 
-src/index.types.ts:40
+src/index.types.ts:42

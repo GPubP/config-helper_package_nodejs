@@ -21,4 +21,6 @@
 - [GatewayJWTContent](../wiki/GatewayJWTContent)
 - [ModuleConfig](../wiki/ModuleConfig)
 - [ModuleContext](../wiki/ModuleContext)
+- [ModuleDependency](../wiki/ModuleDependency)
+- [ModuleVersion](../wiki/ModuleVersion)
 - [PortalConfig](../wiki/PortalConfig)

@@ -11,7 +11,6 @@
 
 ### Interfaces
 
-- [Dependency](../wiki/~internal~.Dependency)
 - [KafkaConfig](../wiki/~internal~.KafkaConfig)
 - [KafkaHeaders](../wiki/~internal~.KafkaHeaders)
 - [KafkaMessage](../wiki/~internal~.KafkaMessage)

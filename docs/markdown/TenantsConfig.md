@@ -27,6 +27,8 @@
 - [getAppsFeaturingModule](../wiki/TenantsConfig#getappsfeaturingmodule)
 - [getJWTContent](../wiki/TenantsConfig#getjwtcontent)
 - [getModuleContext](../wiki/TenantsConfig#getmodulecontext)
+- [getModuleDependencies](../wiki/TenantsConfig#getmoduledependencies)
+- [getModuleStatus](../wiki/TenantsConfig#getmodulestatus)
 - [requestModule](../wiki/TenantsConfig#requestmodule)
 - [verifyJwt](../wiki/TenantsConfig#verifyjwt)
 
@@ -48,7 +50,7 @@ EventEmitter.constructor
 
 #### Defined in
 
-src/index.ts:33
+src/index.ts:36
 
 ## Properties
 
@@ -76,7 +78,7 @@ Defines HTTP route param decorator
 
 #### Defined in
 
-src/index.ts:213
+src/index.ts:248
 
 ___
 
@@ -86,7 +88,7 @@ ___
 
 #### Defined in
 
-src/index.ts:26
+src/index.ts:29
 
 ___
 
@@ -96,7 +98,7 @@ ___
 
 #### Defined in
 
-src/index.ts:25
+src/index.ts:28
 
 ## Methods
 
@@ -118,7 +120,7 @@ src/index.ts:25
 
 #### Defined in
 
-src/index.ts:51
+src/index.ts:54
 
 ___
 
@@ -132,7 +134,7 @@ ___
 
 #### Defined in
 
-src/index.ts:122
+src/index.ts:125
 
 ___
 
@@ -152,7 +154,7 @@ ___
 
 #### Defined in
 
-src/index.ts:116
+src/index.ts:119
 
 ___
 
@@ -172,7 +174,7 @@ ___
 
 #### Defined in
 
-src/index.ts:130
+src/index.ts:137
 
 ___
 
@@ -193,7 +195,7 @@ ___
 
 #### Defined in
 
-src/index.ts:225
+src/index.ts:260
 
 ___
 
@@ -213,7 +215,7 @@ ___
 
 #### Defined in
 
-src/index.ts:112
+src/index.ts:115
 
 ___
 
@@ -227,7 +229,42 @@ ___
 
 #### Defined in
 
-src/index.ts:126
+src/index.ts:129
+
+___
+
+### getModuleDependencies
+
+▸ **getModuleDependencies**(): [`ModuleDependency`](../wiki/ModuleDependency)[]
+
+#### Returns
+
+[`ModuleDependency`](../wiki/ModuleDependency)[]
+
+#### Defined in
+
+src/index.ts:133
+
+___
+
+### getModuleStatus
+
+▸ **getModuleStatus**(`name`, `checkEndpoint?`): `CheckFunction`
+
+#### Parameters
+
+| Name | Type | Default value |
+| :------ | :------ | :------ |
+| `name` | `string` | `undefined` |
+| `checkEndpoint` | `string` | `'/status/health'` |
+
+#### Returns
+
+`CheckFunction`
+
+#### Defined in
+
+src/index.ts:152
 
 ___
 
@@ -257,7 +294,7 @@ ___
 
 #### Defined in
 
-src/index.ts:145
+src/index.ts:180
 
 ▸ **requestModule**<`T`\>(`tenantApikey`, `moduleRoutePrefix`, `method`, `path`, `params`): `Promise`<`GotReturn`\>
 
@@ -283,7 +320,7 @@ src/index.ts:145
 
 #### Defined in
 
-src/index.ts:153
+src/index.ts:188
 
 ___
 
@@ -317,4 +354,4 @@ ___
 
 #### Defined in
 
-src/index.ts:71
+src/index.ts:74

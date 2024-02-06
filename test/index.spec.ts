@@ -16,6 +16,7 @@ describe('ApiKeyGuard', () => {
 	beforeEach((done) => {
 		nock('http://mocked-url.com')
 			.get('/api/1.0.0/modules/config')
+			.query(true)
 			.reply(200, mockConfig);
 
 		config = new TenantsConfig({
@@ -75,6 +76,7 @@ describe('Request Module', () => {
 	beforeEach(async () => {
 		nock('http://mocked-url.com')
 			.get('/api/1.0.0/modules/config')
+			.query(true)
 			.reply(200, mockConfig);
 
 		config = new TenantsConfig({
@@ -182,6 +184,7 @@ describe('verifyJwt', () => {
 	beforeEach(async () => {
 		nock('http://mocked-url.com')
 			.get('/api/1.0.0/modules/config')
+			.query(true)
 			.reply(200, mockConfig);
 
 		config = new TenantsConfig({
@@ -273,6 +276,7 @@ describe('getJWTContent', () => {
 	beforeEach(async () => {
 		nock('http://mocked-url.com')
 			.get('/api/1.0.0/modules/config')
+			.query(true)
 			.reply(200, mockConfig);
 
 		config = new TenantsConfig({
@@ -315,6 +319,7 @@ describe('getAllApps', () => {
 	beforeEach(async () => {
 		nock('http://mocked-url.com')
 			.get('/api/1.0.0/modules/config')
+			.query(true)
 			.reply(200, mockConfig);
 
 		config = new TenantsConfig({
@@ -339,6 +344,7 @@ describe('getAppModuleConfig', () => {
 	beforeEach(async () => {
 		nock('http://mocked-url.com')
 			.get('/api/1.0.0/modules/config')
+			.query(true)
 			.reply(200, mockConfig);
 
 		config = new TenantsConfig({
@@ -368,6 +374,7 @@ describe('getModuleContext', () => {
 	beforeEach(async () => {
 		nock('http://mocked-url.com')
 			.get('/api/1.0.0/modules/config')
+			.query(true)
 			.reply(200, mockConfig);
 
 		config = new TenantsConfig({

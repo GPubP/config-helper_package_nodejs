@@ -15,7 +15,7 @@
 
 #### Defined in
 
-src/index.types.ts:71
+src/index.types.ts:73
 
 ___
 
@@ -25,4 +25,4 @@ ___
 
 #### Defined in
 
-src/index.types.ts:70
+src/index.types.ts:72
