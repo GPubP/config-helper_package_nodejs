@@ -121,7 +121,7 @@ interface AppContext {
 		endpoint?: string;
 		description: string;
 		version: string;
-		dependencies: Dependency[];
+		dependencies: ModuleDependency[];
 	}[];
 }
 ```
@@ -150,7 +150,7 @@ type AppContext = Array<{
 		endpoint?: string;
 		description: string;
 		version: string;
-		dependencies: Dependency[];
+		dependencies: ModuleDependency[];
 	}[];
 }>
 ```
@@ -229,7 +229,7 @@ interface ModuleConfig {
 			version: string;
 			description: string;
 			endpoint: string;
-			dependencies: Dependency[];
+			dependencies: ModuleDependency[];
 		}[];
 	};
 };

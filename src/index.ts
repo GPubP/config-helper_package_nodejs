@@ -1,5 +1,7 @@
 import Kafka from '@acpaas/kafka-nodejs-helper';
+import { CheckFunction, ErrorTypes } from '@acpaas/monitor';
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
+import axios from 'axios';
 import { CronJob } from 'cron';
 import { EventEmitter } from 'events';
 import { NextFunction, Request, Response } from 'express';
@@ -14,6 +16,7 @@ import {
 	GatewayJWTContent,
 	ModuleConfig,
 	ModuleContext,
+	ModuleDependency,
 	PortalConfig
 } from './index.types';
 import { axiosInstance } from './instances/axios';
@@ -33,8 +36,10 @@ export class TenantsConfig extends EventEmitter {
 	constructor(portalConfig: PortalConfig) {
 		super();
 
+		const cronStart = this.pickRandomCronStart();
+
 		this.portalConfig = {
-			cronFrequency: '*/10 * * * * *',
+			cronFrequency: `${cronStart} * * * * *`,
 			...portalConfig
 		};
 
@@ -127,6 +132,10 @@ export class TenantsConfig extends EventEmitter {
 		return clone(this.moduleContext?.moduleConfiguration);
 	}
 
+	public getModuleDependencies(): ModuleDependency[] {
+		return this.getModuleContext()?.data.versions?.[0]?.dependencies || [];
+	}
+
 	public getAppModuleConfig(
 		tenantUuid: string,
 	): Record<string, string | Record<string, string>> {
@@ -140,6 +149,34 @@ export class TenantsConfig extends EventEmitter {
 		);
 
 		return (module?.config as Record<string, string>) || {};
+	}
+
+	public getModuleStatus(name: string, checkEndpoint = '/status/ping'): CheckFunction {
+		return async () => {
+			const dependencies = this.getModuleDependencies();
+	
+			const dependency = dependencies.find((dep) => (dep.module as ModuleConfig)?.data.name === name);
+	
+			if (!dependency || !(dependency.module as ModuleConfig)?.data?.versions?.[0]) {
+				return {
+					responseType: ErrorTypes.OUTAGE,
+					reason: `Could not find "${name}" in module dependencies.`
+				}
+			}
+	
+			const dependencyBaseURL = (dependency.module as ModuleConfig).data.versions[0].endpoint;
+	
+			try {
+				const response = await axios.get(`${dependencyBaseURL}${checkEndpoint}`);
+		
+				return response.data;
+			} catch (err) {
+				return {
+					responseType: ErrorTypes.OUTAGE,
+					reason: err?.message || err.toString()
+				};
+			}
+		};
 	}
 
 	public async requestModule<T = unknown>(
@@ -286,12 +323,20 @@ export class TenantsConfig extends EventEmitter {
 		return axiosInstance
 			.gotGet<ModuleContext>(`${this.portalConfig.baseUrl}/modules/config`, {
 				responseType: 'json',
-				headers: { apikey: this.portalConfig.apikey }
+				headers: { apikey: this.portalConfig.apikey },
+				searchParams: { populate: true }
 			})
 			.then((result) => {
 				this.moduleContext = result.body;
 				return result.body;
 			});
+	}
+
+	private pickRandomCronStart(): number {
+		const min = 1;
+		const max = 59;
+
+		return Math.floor(Math.random() * (max - min + 1)) + min;
 	}
 }
 

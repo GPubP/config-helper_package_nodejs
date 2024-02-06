@@ -2,9 +2,16 @@ import { Request } from 'express';
 
 import { KafkaConfig } from './kafka/kafka.types';
 
-interface Dependency {
+export interface ModuleDependency {
 	version: string;
-	module: string;
+	module: string | ModuleConfig;
+}
+
+export interface ModuleVersion {
+	version: string;
+	description: string;
+	endpoint: string;
+	dependencies: ModuleDependency[];
 }
 
 export interface ModuleConfig {
@@ -19,12 +26,7 @@ export interface ModuleConfig {
 		name: string;
 		moduleType: string;
 		routePrefix: string;
-		versions: {
-			version: string;
-			description: string;
-			endpoint: string;
-			dependencies: Dependency[];
-		}[];
+		versions: ModuleVersion[];
 	};
 }
 
@@ -53,7 +55,7 @@ export interface AppModuleVersion {
 	endpoint?: string;
 	description: string;
 	version: string;
-	dependencies: Dependency[];
+	dependencies: ModuleDependency[];
 	config?: unknown;
 }
 

@@ -17,7 +17,7 @@
 
 #### Defined in
 
-src/index.types.ts:11
+src/index.types.ts:18
 
 ___
 
@@ -32,11 +32,11 @@ ___
 | `moduleType` | `string` |
 | `name` | `string` |
 | `routePrefix` | `string` |
-| `versions` | { `dependencies`: [`Dependency`](../wiki/~internal~.Dependency)[] ; `description`: `string` ; `endpoint`: `string` ; `version`: `string`  }[] |
+| `versions` | [`ModuleVersion`](../wiki/ModuleVersion)[] |
 
 #### Defined in
 
-src/index.types.ts:18
+src/index.types.ts:25
 
 ___
 
@@ -54,7 +54,7 @@ ___
 
 #### Defined in
 
-src/index.types.ts:13
+src/index.types.ts:20
 
 ___
 
@@ -64,4 +64,4 @@ ___
 
 #### Defined in
 
-src/index.types.ts:12
+src/index.types.ts:19
