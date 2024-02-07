@@ -22,6 +22,7 @@ export class CustomError implements ICustomError {
 	public status = 500;
 	public identifier: string = uuid();
 	public code = 'UNKNOWN_ERROR';
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	public extraInfo: any = null;
 
 	constructor(err?: Error) {
