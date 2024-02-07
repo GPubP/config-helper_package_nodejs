@@ -1,4 +1,4 @@
-import Kafka from '@acpaas/kafka-nodejs-helper';
+import { Kafka } from '@acpaas/kafka-nodejs-helper';
 import { EventEmitter } from 'events';
 
 import { KafkaConfig } from '../kafka.types';

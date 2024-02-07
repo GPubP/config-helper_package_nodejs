@@ -1,4 +1,4 @@
-import Kafka from '@acpaas/kafka-nodejs-helper';
+import { Kafka } from '@acpaas/kafka-nodejs-helper';
 import { CheckFunction, ErrorTypes } from '@acpaas/monitor';
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 import axios from 'axios';
