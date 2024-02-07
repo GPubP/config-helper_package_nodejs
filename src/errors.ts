@@ -1,9 +1,4 @@
-import {
-	ArgumentsHost,
-	Catch,
-	ExceptionFilter,
-	HttpException
-} from '@nestjs/common';
+import { ArgumentsHost, Catch, ExceptionFilter, HttpException } from '@nestjs/common';
 import { AxiosGotError } from '@wcm/axios-got-wrapper';
 import { AxiosError } from 'axios';
 import { HTTPError } from 'got';
@@ -18,7 +13,7 @@ export const UnauthorizedError = Object.freeze({
 	title: 'You are not authorized to use this endpoint',
 	status: 401,
 	identifier: uuid(),
-	code: 'Unauthorized'
+	code: 'Unauthorized',
 });
 
 export class CustomError implements ICustomError {
@@ -27,7 +22,8 @@ export class CustomError implements ICustomError {
 	public status = 500;
 	public identifier: string = uuid();
 	public code = 'UNKNOWN_ERROR';
-	public extraInfo: unknown = null;
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	public extraInfo: any = null;
 
 	constructor(err?: Error) {
 		Error.captureStackTrace(this, this.constructor);
@@ -50,13 +46,12 @@ export class CustomValidationError extends CustomError {
 	}
 }
 
-
 // Map all errors to Digipolis response
 @Catch()
 export class ErrorFilter implements ExceptionFilter {
 	private options: ICustomFilterOptions;
 
-	constructor ({ debug = false } = {}) {
+	constructor({ debug = false } = {}) {
 		this.options = { debug: debug };
 	}
 
@@ -70,7 +65,10 @@ export class ErrorFilter implements ExceptionFilter {
 	}
 }
 
-export function obfuscateError(exception: CustomError | CustomValidationError | unknown, debug: boolean): {status: number, error: CustomError} {
+export function obfuscateError(
+	exception: CustomError | CustomValidationError | unknown,
+	debug: boolean
+): { status: number; error: CustomError } {
 	let status: number;
 	let error: CustomError;
 
@@ -82,7 +80,7 @@ export function obfuscateError(exception: CustomError | CustomValidationError | 
 			title: exception.message,
 			type: 'HTTPError',
 			code: exception.constructor.name,
-			extraInfo: debug ? omit(['statusCode', 'error'])(exception.getResponse()) : null
+			extraInfo: debug ? omit(['statusCode', 'error'])(exception.getResponse()) : null,
 		};
 	} else if (exception instanceof HTTPError) {
 		status = exception?.response?.statusCode || 500;
@@ -94,16 +92,20 @@ export function obfuscateError(exception: CustomError | CustomValidationError | 
 			code: exception?.name,
 			extraInfo: {
 				...(debug ? { stack: exception?.stack } : {}),
-				body: exception?.response?.body
-			}
+				body: exception?.response?.body,
+			},
 		};
 	} else if (
-		exception instanceof AxiosError
-		|| exception?.constructor?.name === 'AxiosError'
-		|| exception instanceof AxiosGotError
-		|| exception?.constructor?.name === 'AxiosGotError'
+		exception instanceof AxiosError ||
+		exception?.constructor?.name === 'AxiosError' ||
+		exception instanceof AxiosGotError ||
+		exception?.constructor?.name === 'AxiosGotError'
 	) {
-		status = (exception as AxiosGotError)?.status || (exception as AxiosGotError)?.response?.status || 500;
+		status =
+			(exception as AxiosGotError)?.status ||
+			(exception as AxiosGotError)?.response?.status ||
+			(exception as AxiosGotError)?.response?.statusCode ||
+			500;
 		error = {
 			identifier: uuid(),
 			status,
@@ -112,8 +114,10 @@ export function obfuscateError(exception: CustomError | CustomValidationError | 
 			code: (exception as AxiosGotError)?.code,
 			extraInfo: {
 				...(debug ? { stack: (exception as AxiosGotError)?.stack } : {}),
-				body: (exception as AxiosGotError)?.response?.data
-			}
+				body:
+					(exception as AxiosGotError)?.response?.data ||
+					(exception as AxiosGotError)?.response?.body,
+			},
 		};
 	} else {
 		status = (exception as CustomError)?.status || 500;
@@ -123,13 +127,9 @@ export function obfuscateError(exception: CustomError | CustomValidationError | 
 			title: (exception as CustomError)?.title || 'Onbekende error',
 			type: (exception as CustomError)?.type || 'UNKNOWN_ERROR',
 			code: String((exception as CustomError)?.status) || 'UNKNOWN_ERROR',
-			extraInfo: (exception as CustomError)?.extraInfo
-				|| (debug
-					? exception
-					: exception?.toString
-						? exception?.toString()
-						: null
-				)
+			extraInfo:
+				(exception as CustomError)?.extraInfo ||
+				(debug ? exception : exception?.toString ? exception?.toString() : null),
 		};
 	}
 
@@ -139,4 +139,3 @@ export function obfuscateError(exception: CustomError | CustomValidationError | 
 
 	return { status, error };
 }
-
