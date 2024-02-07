@@ -1,4 +1,4 @@
-import Kafka from '@acpaas/kafka-nodejs-helper';
+import { Kafka } from '@acpaas/kafka-nodejs-helper';
 
 import { KafkaConfig } from './kafka.types';
 

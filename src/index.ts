@@ -1,5 +1,6 @@
-import Kafka from '@acpaas/kafka-nodejs-helper';
+import { Kafka } from '@acpaas/kafka-nodejs-helper';
 import { CheckFunction, CheckSuccessResponse, ErrorTypes } from '@acpaas/monitor';
+import { CheckErrorResponse } from '@acpaas/monitor/dist/shared/types/responses/responses.types';
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 import axios from 'axios';
 import { CronJob } from 'cron';
@@ -23,7 +24,6 @@ import { axiosInstance } from './instances/axios';
 import { WcmDigipolisModulesConsumer } from './kafka/consumers/wcm-digipolis.modules';
 import { WcmDigipolisTenantsConsumer } from './kafka/consumers/wcm-digipolis.tenants';
 import { createKafkaInstance } from './kafka/kafka';
-import { CheckErrorResponse } from '@acpaas/monitor/dist/shared/types/responses/responses.types';
 
 export class TenantsConfig extends EventEmitter {
 	public tenantsKafkaConsumer: WcmDigipolisTenantsConsumer;
@@ -41,7 +41,7 @@ export class TenantsConfig extends EventEmitter {
 
 		this.portalConfig = {
 			cronFrequency: `${cronStart} * * * * *`,
-			...portalConfig
+			...portalConfig,
 		};
 
 		if (portalConfig.kafka) {
@@ -49,22 +49,16 @@ export class TenantsConfig extends EventEmitter {
 		}
 
 		this.initCron();
-		this.fetchConfig().then((moduleContext) =>
-			this.emit('ready', moduleContext),
-		);
+		this.fetchConfig().then((moduleContext) => this.emit('ready', moduleContext));
 	}
 
-	public apiKeyGuard = (
-		req: BSLRequest,
-		res: Response,
-		next: NextFunction,
-	): void => {
+	public apiKeyGuard = (req: BSLRequest, res: Response, next: NextFunction): void => {
 		if (!req.headers.apikey) {
 			return next(UnauthorizedError);
 		}
 
 		const linkedApp = (this.moduleContext?.appsAccess || []).find((app) =>
-			app.allApiKeys.includes(req.headers.apikey as string),
+			app.allApiKeys.includes(req.headers.apikey as string)
 		);
 
 		if (!linkedApp) {
@@ -75,11 +69,12 @@ export class TenantsConfig extends EventEmitter {
 	};
 
 	public verifyJwt(
-		jwtPublicKey: string = this.portalConfig.jwtPublicKey,
+		jwtPublicKey: string = this.portalConfig.jwtPublicKey
+		// eslint-disable-next-line
 	): (req: BSLRequest, res: Response, next: NextFunction) => void {
 		if (!jwtPublicKey) {
 			throw new Error(
-				'verifyJwt: cannot verify incoming request when no public key is specified',
+				'verifyJwt: cannot verify incoming request when no public key is specified'
 			);
 		}
 
@@ -90,28 +85,20 @@ export class TenantsConfig extends EventEmitter {
 
 			const token = req.get('authorization').replace(/^token /i, '');
 
-			jwt.verify(
-				token,
-				jwtPublicKey,
-				{ algorithms: ['RS256'] },
-				(err, context) => {
-					if (err || !context) {
-						// eslint-disable-next-line no-console
-						console.error(
-							'Invalid Token passed in authorization header',
-							req.url,
-						);
-						return next();
-					}
+			jwt.verify(token, jwtPublicKey, { algorithms: ['RS256'] }, (err, context) => {
+				if (err || !context) {
+					// eslint-disable-next-line no-console,no-undef
+					console.error('Invalid Token passed in authorization header', req.url);
+					return next();
+				}
 
-					req.locals = {
-						...req.locals,
-						requestContext: context as GatewayJWTContent
-					};
+				req.locals = {
+					...req.locals,
+					requestContext: context as GatewayJWTContent,
+				};
 
-					next();
-				},
-			);
+				next();
+			});
 		};
 	}
 
@@ -121,7 +108,7 @@ export class TenantsConfig extends EventEmitter {
 
 	public getAppContext(apikey: string): AppContext {
 		return (this.moduleContext?.appsAccess || []).find((app) =>
-			app.allApiKeys.includes(apikey as string),
+			app.allApiKeys.includes(apikey as string)
 		);
 	}
 
@@ -137,16 +124,10 @@ export class TenantsConfig extends EventEmitter {
 		return this.getModuleContext()?.data.versions?.[0]?.dependencies || [];
 	}
 
-	public getAppModuleConfig(
-		tenantUuid: string,
-	): Record<string, string | Record<string, string>> {
-		const app = (this.moduleContext?.appsAccess || []).find(
-			(app) => app.uuid === tenantUuid,
-		);
+	public getAppModuleConfig(tenantUuid: string): Record<string, string | Record<string, string>> {
+		const app = (this.moduleContext?.appsAccess || []).find((app) => app.uuid === tenantUuid);
 		const module = app?.modules.find(
-			(moduleInfo) =>
-				moduleInfo.module.uuid ===
-				this.moduleContext.moduleConfiguration.uuid,
+			(moduleInfo) => moduleInfo.module.uuid === this.moduleContext.moduleConfiguration.uuid
 		);
 
 		return (module?.config as Record<string, string>) || {};
@@ -156,13 +137,15 @@ export class TenantsConfig extends EventEmitter {
 		return async () => {
 			const dependencies = this.getModuleDependencies();
 
-			const dependency = dependencies.find((dep) => (dep.module as ModuleConfig)?.data.name === name);
+			const dependency = dependencies.find(
+				(dep) => (dep.module as ModuleConfig)?.data.name === name
+			);
 
 			if (!dependency || !(dependency.module as ModuleConfig)?.data?.versions?.[0]) {
 				return {
 					responseType: ErrorTypes.OUTAGE,
-					reason: `Could not find "${name}" in module dependencies.`
-				}
+					reason: `Could not find "${name}" in module dependencies.`,
+				};
 			}
 
 			const dependencyBaseURL = (dependency.module as ModuleConfig).data.versions[0].endpoint;
@@ -174,7 +157,7 @@ export class TenantsConfig extends EventEmitter {
 			} catch (err) {
 				return {
 					responseType: ErrorTypes.OUTAGE,
-					reason: err?.message || err.toString()
+					reason: err?.message || err.toString(),
 				};
 			}
 		};
@@ -189,7 +172,7 @@ export class TenantsConfig extends EventEmitter {
 		moduleRoutePrefix: string,
 		method: Method,
 		path: string,
-		params?: Partial<Options> & { isStream?: false | null | undefined },
+		params?: Partial<Options> & { isStream?: false | null | undefined }
 	): Promise<T>;
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	public async requestModule<T = unknown>(
@@ -197,14 +180,14 @@ export class TenantsConfig extends EventEmitter {
 		moduleRoutePrefix: string,
 		method: Method,
 		path: string,
-		params: Partial<Options> & { isStream?: true },
+		params: Partial<Options> & { isStream?: true }
 	): Promise<GotReturn>;
 	public async requestModule<T = unknown>(
 		tenantApikey: string,
 		moduleRoutePrefix: string,
 		method: Method,
 		path: string,
-		params?: Partial<Options> & { isStream?: boolean },
+		params?: Partial<Options> & { isStream?: boolean }
 	): Promise<T | GotReturn> {
 		const appContext = this.getAppContext(tenantApikey);
 
@@ -216,12 +199,12 @@ export class TenantsConfig extends EventEmitter {
 			(modu) =>
 				(modu?.module?.data?.moduleType === 'business-service' ||
 					modu?.module?.data?.moduleType === 'core-component') &&
-				modu?.module?.data?.routePrefix === moduleRoutePrefix,
+				modu?.module?.data?.routePrefix === moduleRoutePrefix
 		);
 
 		if (!moduleContext) {
 			throw new Error(
-				`Could not find module with endpoint ${moduleRoutePrefix} for tenant ${appContext?.name}`,
+				`Could not find module with endpoint ${moduleRoutePrefix} for tenant ${appContext?.name}`
 			);
 		}
 
@@ -230,13 +213,13 @@ export class TenantsConfig extends EventEmitter {
 			prefixUrl: moduleContext.endpoint,
 			resolveBodyOnly: true,
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			...params || {} as any,
+			...(params || ({} as any)),
 			method,
 			headers: {
 				...propOr({}, 'headers')(params),
 				apikey: appContext.apikey,
-				'x-module-id': this.moduleContext.moduleConfiguration.uuid
-			}
+				'x-module-id': this.moduleContext.moduleConfiguration.uuid,
+			},
 		});
 
 		if (params?.isStream) {
@@ -247,7 +230,7 @@ export class TenantsConfig extends EventEmitter {
 			throw {
 				status: e?.response?.statusCode,
 				body: e?.response?.body,
-				error: e
+				error: e,
 			};
 		}) as unknown as Promise<T>;
 	}
@@ -256,33 +239,25 @@ export class TenantsConfig extends EventEmitter {
 		// tslint:disable-line variable-name
 		(path: string[] = [], ctx: ExecutionContext): unknown => {
 			const req: Request = ctx.switchToHttp().getRequest();
-			const appContext: AppContext = this.getAppContext(
-				req.get('apikey'),
-			);
+			const appContext: AppContext = this.getAppContext(req.get('apikey'));
 
 			return pathOr(null, path)(appContext);
-		},
+		}
 	);
 
-	public getAppsFeaturingModule(
-		routePrefix: string,
-		moduleVersion: string,
-	): AppContext[] {
+	public getAppsFeaturingModule(routePrefix: string, moduleVersion: string): AppContext[] {
 		return (this.moduleContext?.appsAccess || []).reduce((acc, app) => {
 			const hasModule = !!app.modules.find(
 				(mod) =>
 					mod?.module?.data?.routePrefix === routePrefix &&
-					(!moduleVersion || mod.version === moduleVersion),
+					(!moduleVersion || mod.version === moduleVersion)
 			);
 			return acc.concat(hasModule ? [app] : []);
 		}, []);
 	}
 
 	private initCron(): void {
-		this.job = new CronJob(
-			this.portalConfig.cronFrequency,
-			this.onTick.bind(this),
-		);
+		this.job = new CronJob(this.portalConfig.cronFrequency, this.onTick.bind(this));
 		this.job.start();
 	}
 
@@ -290,37 +265,29 @@ export class TenantsConfig extends EventEmitter {
 		this.kafka = createKafkaInstance(this.portalConfig.kafka);
 		this.tenantsKafkaConsumer = new WcmDigipolisTenantsConsumer(
 			this.kafka,
-			this.portalConfig.kafka,
+			this.portalConfig.kafka
 		);
 		this.modulesKafkaConsumer = new WcmDigipolisModulesConsumer(
 			this.kafka,
-			this.portalConfig.kafka,
+			this.portalConfig.kafka
 		);
 
 		this.tenantsKafkaConsumer.on(
 			['tenant-created', 'tenant-updated', 'tenant-removed'],
-			(data) => this.onTick(propOr('config-updated', 'key', data)),
+			(data) => this.onTick(propOr('config-updated', 'key', data))
 		);
 
-		this.modulesKafkaConsumer.on(
-			['module-updated', 'module-removed'],
-			(data) =>
-				this.onTick(propOr('config-updated', 'key', data), {
-					moduleId: (data as { value: { uuid: string } })?.value
-						?.uuid
-				}),
+		this.modulesKafkaConsumer.on(['module-updated', 'module-removed'], (data) =>
+			this.onTick(propOr('config-updated', 'key', data), { moduleId: (data as { value: { uuid: string } })?.value?.uuid, })
 		);
 	}
 
-	private onTick(
-		key = 'config-updated',
-		data?: Record<string, unknown>,
-	): void {
+	private onTick(key = 'config-updated', data?: Record<string, unknown>): void {
 		this.fetchConfig().then((moduleContext) =>
 			this.emit(key, {
 				...moduleContext,
-				...data
-			}),
+				...data,
+			})
 		);
 	}
 
@@ -329,7 +296,7 @@ export class TenantsConfig extends EventEmitter {
 			.gotGet<ModuleContext>(`${this.portalConfig.baseUrl}/modules/config`, {
 				responseType: 'json',
 				headers: { apikey: this.portalConfig.apikey },
-				searchParams: { populate: true }
+				searchParams: { populate: true },
 			})
 			.then((result) => {
 				this.moduleContext = result.body;
