@@ -1,5 +1,5 @@
 import Kafka from '@acpaas/kafka-nodejs-helper';
-import { CheckFunction, ErrorTypes } from '@acpaas/monitor';
+import { CheckFunction, CheckSuccessResponse, ErrorTypes } from '@acpaas/monitor';
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 import axios from 'axios';
 import { CronJob } from 'cron';
@@ -23,6 +23,7 @@ import { axiosInstance } from './instances/axios';
 import { WcmDigipolisModulesConsumer } from './kafka/consumers/wcm-digipolis.modules';
 import { WcmDigipolisTenantsConsumer } from './kafka/consumers/wcm-digipolis.tenants';
 import { createKafkaInstance } from './kafka/kafka';
+import { CheckErrorResponse } from '@acpaas/monitor/dist/shared/types/responses/responses.types';
 
 export class TenantsConfig extends EventEmitter {
 	public tenantsKafkaConsumer: WcmDigipolisTenantsConsumer;
@@ -154,21 +155,21 @@ export class TenantsConfig extends EventEmitter {
 	public getModuleStatus(name: string, checkEndpoint = '/status/ping'): CheckFunction {
 		return async () => {
 			const dependencies = this.getModuleDependencies();
-	
+
 			const dependency = dependencies.find((dep) => (dep.module as ModuleConfig)?.data.name === name);
-	
+
 			if (!dependency || !(dependency.module as ModuleConfig)?.data?.versions?.[0]) {
 				return {
 					responseType: ErrorTypes.OUTAGE,
 					reason: `Could not find "${name}" in module dependencies.`
 				}
 			}
-	
+
 			const dependencyBaseURL = (dependency.module as ModuleConfig).data.versions[0].endpoint;
-	
+
 			try {
 				const response = await axios.get(`${dependencyBaseURL}${checkEndpoint}`);
-		
+
 				return response.data;
 			} catch (err) {
 				return {
@@ -177,6 +178,10 @@ export class TenantsConfig extends EventEmitter {
 				};
 			}
 		};
+	}
+
+	public getPortalStatus (): Promise<CheckSuccessResponse | CheckErrorResponse | void> {
+		return axios.get(`${this.portalConfig.baseUrl}/status/ping`)
 	}
 
 	public async requestModule<T = unknown>(
