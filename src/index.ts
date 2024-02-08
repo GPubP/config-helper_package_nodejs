@@ -163,8 +163,10 @@ export class TenantsConfig extends EventEmitter {
 		};
 	}
 
-	public async getPortalStatus (): Promise<CheckFunction> {
-		return await axios.get(`${this.portalConfig.baseUrl}/status/ping`)
+	public getPortalStatus (): CheckFunction{
+		return async () => {
+			return await axios.get(`${this.portalConfig.baseUrl}/status/ping`)
+		}
 	}
 
 	public async requestModule<T = unknown>(
