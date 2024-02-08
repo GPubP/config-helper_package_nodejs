@@ -165,7 +165,15 @@ export class TenantsConfig extends EventEmitter {
 
 	public getPortalStatus (): CheckFunction{
 		return async () => {
-			return await axios.get(`${this.portalConfig.baseUrl}/status/ping`)
+			try {
+				const response = await axios.get(`${this.portalConfig.baseUrl}/status/ping`);
+				return response.data;
+			} catch (err) {
+				return {
+					responseType: ErrorTypes.OUTAGE,
+					reason: err?.message || err.toString(),
+				};
+			}
 		}
 	}
 
