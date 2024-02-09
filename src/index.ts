@@ -152,8 +152,11 @@ export class TenantsConfig extends EventEmitter {
 
 			try {
 				const response = await axios.get(`${dependencyBaseURL}${checkEndpoint}`);
-
-				return response.data;
+				return  {
+					responseType: ErrorTypes.OK,
+					reason: `${name} is up and running`,
+					payload: response.data
+				};
 			} catch (err) {
 				return {
 					responseType: ErrorTypes.OUTAGE,
