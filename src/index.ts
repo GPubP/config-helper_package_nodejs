@@ -17,7 +17,7 @@ import {
 	ModuleConfig,
 	ModuleContext,
 	ModuleDependency,
-	PortalConfig,
+	PortalConfig
 } from './index.types';
 import { axiosInstance } from './instances/axios';
 import { WcmDigipolisModulesConsumer } from './kafka/consumers/wcm-digipolis.modules';
@@ -151,8 +151,11 @@ export class TenantsConfig extends EventEmitter {
 
 			try {
 				const response = await axios.get(`${dependencyBaseURL}${checkEndpoint}`);
-
-				return response.data;
+				return  {
+					responseType: ErrorTypes.OK,
+					value: `${name} is up and running`,
+					payload: response.data
+				};
 			} catch (err) {
 				return {
 					responseType: ErrorTypes.OUTAGE,
@@ -160,6 +163,25 @@ export class TenantsConfig extends EventEmitter {
 				};
 			}
 		};
+	}
+
+	public getPortalStatus (): CheckFunction{
+		return async () => {
+			try {
+				const response = await axios.get(`${this.portalConfig.baseUrl}/status/ping`);
+				return {
+					responseType: ErrorTypes.OK,
+					reason: 'Portal is up and running',
+					payload: response.data
+				};
+
+			} catch (err) {
+				return {
+					responseType: ErrorTypes.OUTAGE,
+					reason: err?.message || err.toString(),
+				};
+			}
+		}
 	}
 
 	public async requestModule<T = unknown>(
