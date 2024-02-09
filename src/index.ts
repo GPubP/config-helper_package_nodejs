@@ -1,6 +1,5 @@
 import { Kafka } from '@acpaas/kafka-nodejs-helper';
-import { CheckFunction, CheckSuccessResponse, ErrorTypes } from '@acpaas/monitor';
-import { CheckErrorResponse } from '@acpaas/monitor/dist/shared/types/responses/responses.types';
+import { CheckFunction, ErrorTypes } from '@acpaas/monitor';
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 import axios from 'axios';
 import { CronJob } from 'cron';
@@ -154,7 +153,7 @@ export class TenantsConfig extends EventEmitter {
 				const response = await axios.get(`${dependencyBaseURL}${checkEndpoint}`);
 				return  {
 					responseType: ErrorTypes.OK,
-					reason: `${name} is up and running`,
+					value: `${name} is up and running`,
 					payload: response.data
 				};
 			} catch (err) {
