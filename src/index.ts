@@ -168,7 +168,7 @@ export class TenantsConfig extends EventEmitter {
 	public getPortalStatus (): CheckFunction{
 		return async () => {
 			try {
-				const response = await axios.get(`${this.portalConfig.baseUrl}/status/ping`);
+				const response = await axios.get(`${this.portalConfig.baseUrl}/status/ping`, { headers: { apikey: this.portalConfig.apikey } });
 				return {
 					responseType: ErrorTypes.OK,
 					reason: 'Portal is up and running',
