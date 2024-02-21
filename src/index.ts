@@ -171,7 +171,7 @@ export class TenantsConfig extends EventEmitter {
 				const response = await axios.get(`${this.portalConfig.baseUrl}/status/ping`, { headers: { apikey: this.portalConfig.apikey } });
 				return {
 					responseType: ErrorTypes.OK,
-					reason: 'Portal is up and running',
+					value: 'Portal is up and running',
 					payload: response.data
 				};
 
