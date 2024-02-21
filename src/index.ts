@@ -7,7 +7,7 @@ import { EventEmitter } from 'events';
 import { NextFunction, Request, Response } from 'express';
 import { Method, Options, GotReturn } from 'got';
 import jwt from 'jsonwebtoken';
-import { clone, omit, pathOr, propOr } from 'ramda';
+import { clone, pathOr, propOr } from 'ramda';
 
 import { UnauthorizedError } from './errors';
 import {
