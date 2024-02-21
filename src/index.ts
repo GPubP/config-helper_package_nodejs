@@ -7,7 +7,7 @@ import { EventEmitter } from 'events';
 import { NextFunction, Request, Response } from 'express';
 import { Method, Options, GotReturn } from 'got';
 import jwt from 'jsonwebtoken';
-import { clone, pathOr, propOr } from 'ramda';
+import { clone, omit, pathOr, propOr } from 'ramda';
 
 import { UnauthorizedError } from './errors';
 import {
@@ -171,7 +171,7 @@ export class TenantsConfig extends EventEmitter {
 				const response = await axios.get(`${this.portalConfig.baseUrl}/status/ping`, { headers: { apikey: this.portalConfig.apikey } });
 				return {
 					responseType: ErrorTypes.OK,
-					reason: 'Portal is up and running',
+					value: 'Portal is up and running',
 					payload: response.data
 				};
 
