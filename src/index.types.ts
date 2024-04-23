@@ -66,6 +66,9 @@ export interface AppContext {
 	apikey: string;
 	allApiKeys: string[];
 	modules: AppModuleVersion[];
+	client?: {
+		name: string;
+	};
 }
 
 export interface ModuleContext {
