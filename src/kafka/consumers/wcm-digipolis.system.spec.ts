@@ -1,4 +1,4 @@
-import Kafka from '@acpaas/kafka-nodejs-helper';
+import { Kafka } from '@acpaas/kafka-nodejs-helper';
 import { jest } from '@jest/globals';
 
 import { WcmDigipolisSystemConsumer } from './wcm-digipolis.system';

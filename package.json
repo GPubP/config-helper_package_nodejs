@@ -21,7 +21,7 @@
     "helper"
   ],
   "devDependencies": {
-    "@nestjs/common": "10.1.0",
+    "@nestjs/common": "10.3.10",
     "@types/cron": "^1.7.3",
     "@types/express": "4.17.21",
     "@types/jest": "29.5.2",
@@ -30,9 +30,9 @@
     "@types/sinon": "^9.0.4",
     "@types/sinon-express-mock": "1.3.9",
     "@types/uuid": "^7.0.0",
-    "@typescript-eslint/eslint-plugin": "5.59.11",
-    "@typescript-eslint/parser": "5.59.11",
-    "eslint": "8.42.0",
+    "@typescript-eslint/eslint-plugin": "7.17.0",
+    "@typescript-eslint/parser": "7.17.0",
+    "eslint": "8.57.0",
     "eslint-config-prettier": "9.1.0",
     "eslint-plugin-import": "2.27.5",
     "eslint-plugin-prettier": "5.1.3",
@@ -47,11 +47,11 @@
     "sinon-express-mock": "^2.2.1",
     "ts-jest": "29.1.0",
     "ts-loader": "6.2.1",
-    "typedoc": "0.24.8",
+    "typedoc": "0.26.5",
     "typedoc-github-wiki-theme": "1.1.0",
     "typedoc-plugin-markdown": "3.15.3",
-    "typedoc-plugin-missing-exports": "2.0.0",
-    "typescript": "5.1.3"
+    "typedoc-plugin-missing-exports": "3.0.0",
+    "typescript": "5.5.4"
   },
   "author": "Pieterjan Van Saet <pieterjan.vansaet@studiohyperdrive.be>",
   "license": "ISC",
@@ -61,11 +61,11 @@
     "cron": "1.8.2",
     "express": "4.19.2",
     "jsonwebtoken": "9.0.0",
-    "ramda": "0.29.0",
+    "ramda": "0.30.1",
     "uuid": "9.0.1"
   },
   "peerDependencies": {
-    "@nestjs/common": "^10.1.0",
+    "@nestjs/common": "^10.3.10",
     "@wcm/axios-got-wrapper": "^2.2.1",
     "rxjs": "^7.8.1"
   }
