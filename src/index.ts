@@ -69,7 +69,6 @@ export class TenantsConfig extends EventEmitter {
 
 	public verifyJwt(
 		jwtPublicKey: string = this.portalConfig.jwtPublicKey
-		// eslint-disable-next-line
 	): (req: BSLRequest, res: Response, next: NextFunction) => void {
 		if (!jwtPublicKey) {
 			throw new Error(
@@ -86,7 +85,7 @@ export class TenantsConfig extends EventEmitter {
 
 			jwt.verify(token, jwtPublicKey, { algorithms: ['RS256'] }, (err, context) => {
 				if (err || !context) {
-					// eslint-disable-next-line no-console,no-undef
+					// eslint-disable-next-line no-console
 					console.error('Invalid Token passed in authorization header', req.url);
 					return next();
 				}
