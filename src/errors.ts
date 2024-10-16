@@ -80,8 +80,7 @@ export function obfuscateError(
 			title: exception.message,
 			type: 'HTTPError',
 			code: exception.constructor.name,
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			extraInfo: debug ? omit(['statusCode', 'error'])(exception.getResponse() as Partial<Record<'error' | 'statusCode', any>>) : null,
+			extraInfo: debug ? omit(['statusCode', 'error'])(exception.getResponse()) : null,
 		};
 	} else if (exception instanceof HTTPError) {
 		status = exception?.response?.statusCode || 500;
