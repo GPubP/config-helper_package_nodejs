@@ -13,7 +13,7 @@
     "install:peers": "install-peers -f",
     "docs": "npm run docs:html && npm run docs:markdown",
     "docs:html": "typedoc --plugin typedoc-plugin-missing-exports --internalModule ~internal~ --excludeExternals true --entryPoints ./src/index.ts --excludePrivate --out docs",
-    "docs:markdown": "typedoc --plugin typedoc-plugin-markdown --plugin typedoc-github-wiki-theme --plugin typedoc-plugin-missing-exports --internalModule ~internal~ --excludeExternals true --entryPoints ./src/index.ts --excludePrivate --theme github-wiki --out docs/markdown"
+    "docs:markdown": "typedoc --plugin typedoc-plugin-markdown --plugin typedoc-github-theme --plugin typedoc-plugin-missing-exports --internalModule ~internal~ --excludeExternals true --entryPoints ./src/index.ts --excludePrivate --out docs/markdown"
   },
   "keywords": [
     "WCM",
@@ -50,10 +50,10 @@
     "sinon-express-mock": "^2.2.1",
     "ts-jest": "29.1.0",
     "ts-loader": "6.2.1",
-    "typedoc": "0.26.10",
-    "typedoc-github-wiki-theme": "1.1.0",
-    "typedoc-plugin-markdown": "3.15.3",
-    "typedoc-plugin-missing-exports": "3.0.0",
+    "typedoc": "0.28.4",
+    "typedoc-github-theme": "0.3.0",
+    "typedoc-plugin-markdown": "4.6.3",
+    "typedoc-plugin-missing-exports": "4.0.0",
     "typescript": "5.7.3"
   },
   "author": "Pieterjan Van Saet <pieterjan.vansaet@studiohyperdrive.be>",
@@ -71,10 +71,5 @@
     "@nestjs/common": "^11.1.0",
     "@wcm/axios-got-wrapper": "^2.2.5",
     "rxjs": "^7.8.2"
-  },
-  "overrides": {
-    "typedoc": {
-      "typescript": "5.7.3"
-    }
   }
 }
